@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Metas</title>
+    
+    <link rel="manifest" href="manifest.json">
+    
+    <style>
+        /* --- CSS EMBUTIDO --- */
+        :root {
+            --primary-color: #1877f2;
+            --secondary-button-bg: #e4e6eb;
+            --background-color: #f0f2f5;
+            --container-background: #ffffff;
+            --text-color: #1c1e21;
+            --text-secondary-color: #606770;
+            --border-color: #ddd;
+            --info-color: #1877f2;
+            --info-background: #e7f3ff;
+            --success-color: #31a24c;
+            --success-background: #e3f3e6;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .page-container { max-width: 600px; margin: 20px auto; padding: 20px 40px; background-color: var(--container-background); border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; }
+        .page-container h1 { color: var(--text-color); margin-bottom: 5px; }
+        .page-container p { color: var(--text-secondary-color); margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 500; color: var(--text-color); }
+        .form-group input { width: 100%; padding: 10px; box-sizing: border-box; font-size: 14px; border: 1px solid var(--border-color); border-radius: 6px; background-color: #fdfdfd; }
+        .button { background-color: var(--primary-color); color: white; padding: 10px 15px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; }
+        .metric-group { text-align: left; }
+        .section-divider { border: none; border-top: 1px solid var(--border-color); margin: 25px 0; }
+        .faixas-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .faixa-item { background-color: var(--secondary-button-bg); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 16px; font-size: 12px; color: var(--text-secondary-color); transition: all 0.3s; }
+        .faixa-item.achieved { background-color: var(--success-background); border-color: var(--success-color); color: var(--text-color); font-weight: bold; }
+        #metas-container { margin-top: 25px; text-align: left; }
+        .meta-item { margin-bottom: 15px; }
+        .meta-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 14px; }
+        .meta-label { font-weight: 500; }
+        .meta-percentage { font-weight: bold; color: var(--text-secondary-color); }
+        .progress-bar-background { width: 100%; height: 20px; background-color: var(--secondary-button-bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); }
+        .progress-bar-fill { height: 100%; width: 0%; background-color: var(--info-color); border-radius: 10px; transition: width 0.5s ease-out, background-color 0.5s; }
+        .progress-bar-fill.completed { background-color: var(--success-color); }
+        .summary-box { margin-top: 25px; padding: 15px; background-color: var(--info-background); border-left: 5px solid var(--info-color); border-radius: 4px; font-weight: bold; text-align: center; transition: all 0.3s; }
+        .summary-box.completed { background-color: var(--success-background); border-left-color: var(--success-color); }
+        .input-with-button-container { display: flex; gap: 8px; align-items: center; }
+        .input-with-button-container input { flex-grow: 1; }
+        #incrementButton { flex-shrink: 0; width: 50px; font-size: 1.2rem; padding: 8px; cursor: pointer;}
+    </style>
+</head>
+<body>
+
+    <div class="page-container" style="max-width: 600px;">
+        <h1>Calculadora de Metas</h1>
+        <p>Insira seus números para acompanhar o progresso das metas.</p>
+        <div class="metric-group"> <div class="form-group"> <label for="atendimentosInput">Atendimentos (Quantidade):</label> <div class="input-with-button-container"> <input type="number" id="atendimentosInput" placeholder="Ex: 620"> <button type="button" id="incrementButton" class="button">+1</button> </div> </div> <div id="metas-container"></div> <div id="summary-text" class="summary-box">Aguardando seus dados...</div> </div>
+        <hr class="section-divider">
+        <div class="metric-group"> <div class="form-group"> <label for="csatInput">CSAT (%):</label> <input type="number" id="csatInput" placeholder="Ex: 85" min="0" max="100"> </div> <div class="faixas-container" id="csatFaixas"></div> </div>
+        <hr class="section-divider">
+        <div class="metric-group"> <div class="form-group"> <label for="avaliadasInput">Avaliadas (%):</label> <input type="number" id="avaliadasInput" placeholder="Ex: 42" min="0"> </div> <div class="faixas-container" id="avaliadasFaixas"></div> </div>
+    </div>
+
+    <script>
+        // --- JAVASCRIPT PRINCIPAL ---
+        document.addEventListener('DOMContentLoaded', () => { /* ... seu código JS anterior ... */ });
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registrado com sucesso: ', registration.scope);
+                }, err => {
+                    console.log('Registro do ServiceWorker falhou: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
