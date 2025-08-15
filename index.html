@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Metas</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1877f2">
+
+    <style>
+        :root {
+            --primary-color: #1877f2; --primary-color-hover: #166fe5; --secondary-button-bg: #e4e6eb;
+            --secondary-button-hover-bg: #dcdfe3; --background-color: #f0f2f5; --container-background: #ffffff;
+            --text-color: #1c1e21; --text-secondary-color: #606770; --border-color: #ddd; --info-color: #1877f2;
+            --info-background: #e7f3ff; --success-color: #31a24c; --success-background: #e3f3e6;
+            --danger-color: #fa383e; --danger-background: #fad1d1;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color); color: var(--text-color); margin: 0; padding: 20px;
+        }
+        .page-container { max-width: 600px; margin: 20px auto; padding: 20px 40px; background-color: var(--container-background); border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); text-align: center; }
+        .page-container h1 { color: var(--text-color); margin-bottom: 5px; }
+        .page-container p { color: var(--text-secondary-color); margin-bottom: 25px; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: var(--text-color); }
+        .form-group input { width: 100%; padding: 10px; box-sizing: border-box; font-size: 14px; border: 1px solid var(--border-color); border-radius: 6px; background-color: #fdfdfd; }
+        .button { background-color: var(--primary-color); color: white; padding: 10px 15px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .secondary-button { background-color: var(--secondary-button-bg); color: var(--text-color); padding: 10px 15px; border: none; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer; }
+        .secondary-button:hover { background-color: var(--secondary-button-hover-bg); }
+        .danger-button { background-color: var(--danger-background); color: var(--danger-color); border: 1px solid var(--danger-color); }
+        .metric-group { text-align: left; }
+        .section-divider { border: none; border-top: 1px solid var(--border-color); margin: 25px 0; }
+        .faixas-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .faixa-item { background-color: var(--secondary-button-bg); border: 1px solid var(--border-color); padding: 6px 10px; border-radius: 16px; font-size: 12px; color: var(--text-secondary-color); transition: all 0.3s; }
+        .faixa-item.achieved { background-color: var(--success-background); border-color: var(--success-color); color: var(--text-color); font-weight: bold; }
+        #metas-container { margin-top: 25px; text-align: left; }
+        .meta-item { margin-bottom: 15px; }
+        .meta-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 14px; }
+        .meta-label { font-weight: 500; }
+        .meta-percentage { font-weight: bold; color: var(--text-secondary-color); }
+        .progress-bar-background { width: 100%; height: 20px; background-color: var(--secondary-button-bg); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); }
+        .progress-bar-fill { height: 100%; width: 0%; background-color: var(--info-color); border-radius: 10px; transition: width 0.5s ease-out, background-color 0.5s; }
+        .progress-bar-fill.completed { background-color: var(--success-color); }
+        .summary-box { margin-top: 25px; padding: 15px; background-color: var(--info-background); border-left: 5px solid var(--info-color); border-radius: 4px; font-weight: bold; text-align: center; transition: all 0.3s; }
+        .summary-box.completed { background-color: var(--success-background); border-left-color: var(--success-color); }
+        .input-with-button-container { display: flex; gap: 8px; align-items: center; }
+        .input-with-button-container input { flex-grow: 1; }
+        .input-with-button-container .button { flex-shrink: 0; width: 50px; font-size: 1.2rem; padding: 8px; }
+        .save-status { font-size: 12px; color: var(--text-secondary-color); text-align: center; display: block; height: 1em; margin-top: 5px;}
+        .number-display {
+            font-size: 2rem;
+            font-weight: 700; /* Aumentado para mais destaque */
+            text-align: center;
+            padding: 15px 10px;
+            background-color: var(--background-color);
+            border: 1px solid #ccc;
+        }
+        /* NOVO ESTILO PARA COLOCAR OS CONTADORES LADO A LADO */
+        .dual-counter-container {
+            display: flex;
+            gap: 20px; /* Espaço entre os dois contadores */
+            align-items: flex-start;
+        }
+        .dual-counter-container .form-group {
+            flex: 1; /* Faz cada grupo de formulário ocupar metade do espaço */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container" style="max-width: 600px;">
+        <h1>Calculadora de Metas</h1>
+        <p>Acompanhe seu progresso diário e mensal.</p>
+        
+        <div class="metric-group">
+            <div class="dual-counter-container">
+                <div class="form-group">
+                    <label for="atendimentosDiaInput">Atendimentos do Dia:</label>
+                    <div class="input-with-button-container">
+                        <input type="number" id="atendimentosDiaInput" class="number-display" placeholder="0">
+                        <button type="button" id="incrementDiaButton" class="button">+1</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="totalAtendimentosInput">Total Acumulado no Mês:</label>
+                    <input type="number" id="totalAtendimentosInput" class="number-display" placeholder="0">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button type="button" id="zerarDiaButton" class="secondary-button" style="width: 100%;">Zerar Dia (Adicionar ao Total)</button>
+                <button type="button" id="manualSaveButton" class="secondary-button" style="width: 100%;">Salvar Dados</button>
+            </div>
+            <span id="save-status"></span>
+            <div id="metas-container"></div>
+            <div id="summary-text" class="summary-box">Aguardando seus dados...</div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="metric-group">
+            <div class="form-group">
+                <label for="csatInput">CSAT (%):</label>
+                <input type="number" id="csatInput" class="number-display" placeholder="0" min="0" max="100">
+            </div>
+            <div class="faixas-container" id="csatFaixas"></div>
+        </div>
+
+        <hr class="section-divider">
+
+        <div class="metric-group">
+            <div class="form-group">
+                <label for="avaliadasInput">Avaliadas (%):</label>
+                <input type="number" id="avaliadasInput" class="number-display" placeholder="0" min="0">
+            </div>
+            <div class="faixas-container" id="avaliadasFaixas"></div>
+        </div>
+
+        <hr class="section-divider">
+        <button type="button" id="resetTotalButton" class="danger-button secondary-button" style="width: 100%;">Resetar Todos os Dados</button>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const metasPageIdentifier = document.getElementById('totalAtendimentosInput');
+            if (metasPageIdentifier) {
+                const diaInput = document.getElementById('atendimentosDiaInput');
+                const totalInput = document.getElementById('totalAtendimentosInput');
+                const csatInput = document.getElementById('csatInput');
+                const avaliadasInput = document.getElementById('avaliadasInput');
+                const incrementButton = document.getElementById('incrementDiaButton');
+                const zerarDiaButton = document.getElementById('zerarDiaButton');
+                const manualSaveButton = document.getElementById('manualSaveButton');
+                const resetTotalButton = document.getElementById('resetTotalButton');
+                const saveStatus = document.getElementById('save-status');
+                const metasContainer = document.getElementById('metas-container');
+                const summaryText = document.getElementById('summary-text');
+                const metas = [{ id: 1, target: 550, reward: 300 }, { id: 2, target: 750, reward: 400 }, { id: 3, target: 850, reward: 500 }, { id: 4, target: 950, reward: 700 }];
+
+                function renderAtendimentoMetas() { metasContainer.innerHTML = ''; metas.forEach(meta => { const el = document.createElement('div'); el.className = 'meta-item'; el.innerHTML = `<div class="meta-header"><span class="meta-label">Faixa ${meta.id}: ${meta.target} atendimentos (R$ ${meta.reward})</span><span class="meta-percentage" id="meta${meta.id}-percent">0%</span></div><div class="progress-bar-background"><div class="progress-bar-fill" id="meta${meta.id}-fill"></div></div>`; metasContainer.appendChild(el); }); }
+                
+                function updateAtendimentoProgress() { const totalValue = parseInt(totalInput.value) || 0; localStorage.setItem('totalAtendimentos', totalValue); let highestAchieved = null; metas.forEach(meta => { const percent = Math.min(100, (totalValue / meta.target) * 100); const fill = document.getElementById(`meta${meta.id}-fill`); const percentText = document.getElementById(`meta${meta.id}-percent`); fill.style.width = `${percent}%`; percentText.textContent = `${Math.floor(percent)}%`; if (percent >= 100) { fill.classList.add('completed'); highestAchieved = meta; } else { fill.classList.remove('completed'); } }); if (!highestAchieved) { const faltam = metas[0].target - totalValue; summaryText.innerHTML = `Faltam <strong>${faltam > 0 ? faltam : 0}</strong> atendimentos para a Faixa 1.`; summaryText.className = 'summary-box'; } else { const nextMetaIndex = metas.findIndex(m => m.id === highestAchieved.id) + 1; if (nextMetaIndex < metas.length) { const nextMeta = metas[nextMetaIndex]; const faltam = nextMeta.target - totalValue; summaryText.innerHTML = `Parabéns! Atingido: <strong>Faixa ${highestAchieved.id} (R$ ${highestAchieved.reward})</strong>. Faltam <strong>${faltam > 0 ? faltam : 0}</strong> para a próxima!`; summaryText.className = 'summary-box completed'; } else { summaryText.innerHTML = `INCRÍVEL! 🏆 Meta máxima de <strong>R$ ${highestAchieved.reward}</strong> atingida!`; summaryText.className = 'summary-box completed'; } } }
+                
+                function handleDayChange() { const diaValue = parseInt(diaInput.value) || 0; localStorage.setItem('atendimentosDia', diaValue); }
+                
+                function setupTierTracker(inputId, containerId, tiers, storageKey) { const input = document.getElementById(inputId); const container = document.getElementById(containerId); if (!input || !container) return; container.innerHTML = ''; tiers.forEach(tier => { const el = document.createElement('div'); el.className = 'faixa-item'; el.dataset.tierMin = tier.min; el.textContent = tier.label; container.appendChild(el); }); const faixas = container.querySelectorAll('.faixa-item'); function update() { const value = parseFloat(input.value) || 0; localStorage.setItem(storageKey, value); let achievedTierMin = -1; tiers.forEach(tier => { if (value >= tier.min && value <= tier.max) achievedTierMin = tier.min; }); faixas.forEach(faixa => { if (parseInt(faixa.dataset.tierMin) === achievedTierMin) faixa.classList.add('achieved'); else faixa.classList.remove('achieved'); }); } const savedValue = localStorage.getItem(storageKey); if (savedValue) input.value = savedValue; update(); input.addEventListener('input', update); }
+
+                renderAtendimentoMetas();
+                const savedTotal = localStorage.getItem('totalAtendimentos');
+                const savedDia = localStorage.getItem('atendimentosDia');
+                if (savedTotal) totalInput.value = savedTotal;
+                if (savedDia) diaInput.value = savedDia;
+                updateAtendimentoProgress();
+                
+                totalInput.addEventListener('input', updateAtendimentoProgress);
+                diaInput.addEventListener('input', handleDayChange);
+                incrementButton.addEventListener('click', () => { let currentValue = parseInt(diaInput.value) || 0; diaInput.value = currentValue + 1; diaInput.dispatchEvent(new Event('input')); });
+                zerarDiaButton.addEventListener('click', () => { const diaValue = parseInt(diaInput.value) || 0; const totalValue = parseInt(totalInput.value) || 0; if (diaValue > 0) { totalInput.value = totalValue + diaValue; totalInput.dispatchEvent(new Event('input')); } diaInput.value = 0; diaInput.dispatchEvent(new Event('input')); });
+                
+                manualSaveButton.addEventListener('click', () => {
+                    diaInput.dispatchEvent(new Event('input'));
+                    totalInput.dispatchEvent(new Event('input'));
+                    csatInput.dispatchEvent(new Event('input'));
+                    avaliadasInput.dispatchEvent(new Event('input'));
+                    const now = new Date();
+                    saveStatus.textContent = `Salvo às ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                    setTimeout(() => { saveStatus.textContent = ''; }, 2000);
+                });
+
+                resetTotalButton.addEventListener('click', () => {
+                    if (confirm('TEM CERTEZA?\n\nIsso vai apagar TODOS os dados salvos (Total, Dia, CSAT e Avaliadas) e começar do zero. Esta ação não pode ser desfeita.')) {
+                        localStorage.removeItem('totalAtendimentos');
+                        localStorage.removeItem('atendimentosDia');
+                        localStorage.removeItem('csatValue');
+                        localStorage.removeItem('avaliadasValue');
+                        location.reload();
+                    }
+                });
+
+                const csatTiers = [ { label: 'Faixa 1 (60-69%)', min: 60, max: 69.9 }, { label: 'Faixa 2 (70-79%)', min: 70, max: 79.9 }, { label: 'Faixa 3 (80-89%)', min: 80, max: 89.9 }, { label: 'Faixa 4 (90-100%)', min: 90, max: 100 } ];
+                setupTierTracker('csatInput', 'csatFaixas', csatTiers, 'csatValue');
+
+                const avaliadasTiers = [ { label: 'Faixa 1 (21-29%)', min: 21, max: 29.9 }, { label: 'Faixa 2 (30-39%)', min: 30, max: 39.9 }, { label: 'Faixa 3 (40-49%)', min: 40, max: 49.9 }, { label: 'Faixa 4 (+50%)', min: 50, max: Infinity } ];
+                setupTierTracker('avaliadasInput', 'avaliadasFaixas', avaliadasTiers, 'avaliadasValue');
+            }
+        });
+    </script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js').then(reg => console.log('ServiceWorker registrado.'), err => console.log('Falha no registro do ServiceWorker: ', err));
+            });
+        }
+    </script>
+</body>
+</html>
