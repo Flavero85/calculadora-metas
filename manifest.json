@@ -1,21 +1,22 @@
 {
-    "name": "Metas N2",
-    "short_name": "Metas N2",
-    "description": "Aplicativo de acompanhamento de metas para N2.",
-    "start_url": ".",
-    "display": "standalone",
-    "background_color": "#00261e",
-    "theme_color": "#004d40",
-    "icons": [
-        {
-            "src": "icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ]
+  "name": "Suporte N2",
+  "short_name": "Suporte N2",
+  "description": "Aplicativo de acompanhamento de metas para Suporte N2.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#00261e",
+  "theme_color": "#004d40",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
 }
+
