@@ -103,13 +103,13 @@
             color: var(--text-color);
             margin: 0;
             padding: 10px;
-            padding-bottom: 70px; /* Espaço para o rodapé fixo */
+            padding-bottom: 70px;
             transition: background 0.5s, color 0.5s;
         }
         .page-container {
             max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
+            margin: 10px auto;
+            padding: 15px;
             background-color: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border-color);
             border-radius: 16px;
@@ -128,14 +128,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
             position: relative;
         }
-        .header-metas h1 { margin: 0; color: var(--text-color); }
+        .header-logo {
+            height: 32px;
+            width: auto;
+            margin-right: 10px;
+        }
+        .header-metas h1 { 
+            margin: 0; 
+            color: var(--text-color); 
+            font-size: 1.6rem;
+        }
         .metas-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
+            gap: 15px;
         }
         .meta-card {
             background: var(--card-bg);
@@ -148,10 +157,10 @@
             overflow: hidden;
             transition: background-color 0.3s, border-color 0.3s;
         }
-        .card-header { padding: 20px; border-bottom: 1px solid var(--border-color); }
+        .card-header { padding: 15px; border-bottom: 1px solid var(--border-color); }
         .card-header h2 { margin: 0 0 5px 0; color: var(--text-color); }
         .card-header p { margin: 0; font-size: 14px; color: var(--text-secondary-color); }
-        .card-body { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 15px; }
+        .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 12px; }
         .form-group { margin-bottom: 10px; }
         .form-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 500; color: var(--text-secondary-color); }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; box-sizing: border-box; font-size: 14px; border-radius: 6px; background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); }
@@ -208,7 +217,7 @@
         .summary-box { padding: 15px; background-color: var(--info-background); border-left: 5px solid var(--info-color); border-radius: 4px; font-weight: bold; text-align: center; transition: all 0.3s; color: var(--text-color); }
         .summary-box.completed { background-color: var(--success-background); border-left-color: var(--success-color); }
         .indicators-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .bonus-value, .projection-value { font-size: 3rem; font-weight: bold; }
+        .bonus-value, .projection-value { font-size: 2.5rem; font-weight: bold; }
         #history-list, #category-summary-list, #achievement-list { list-style: none; padding: 0; margin: 0; max-height: 250px; overflow-y: auto; }
         #history-list li, #category-summary-list li, #achievement-list li { background-color: rgba(0,0,0,0.1); padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 14px; }
         #chart-container, #category-chart-container { position: relative; height: 220px; width: 100%; }
@@ -229,7 +238,6 @@
             cursor: pointer;
             transition: transform 0.2s, background-color 0.2s;
             text-align: left;
-            /* Estilos para limitar a 2 linhas com "..." */
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
@@ -257,80 +265,111 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            padding-right: 10px;
+            gap: 12px;
+            padding-right: 5px;
         }
+       
         .case-entry {
-            background-color: rgba(0, 0, 0, 0.25);
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid var(--border-color);
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid transparent;
             position: relative;
+            transition: background-color 0.3s, transform 0.2s, border-color 0.3s;
         }
-        body.theme-light .case-entry, body.theme-mint .case-entry { background-color: rgba(0, 0, 0, 0.03); }
+        
+        body.theme-light .case-entry, 
+        body.theme-mint .case-entry { 
+            background-color: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        body.theme-sunset .case-entry { background-color: rgba(0, 0, 0, 0.2); }
+        body.theme-graphite .case-entry { background-color: rgba(255, 255, 255, 0.03); }
+
         .case-number {
             position: absolute;
-            top: 8px;
-            left: 8px;
-            font-size: 12px;
-            font-weight: bold;
-            color: var(--text-secondary-color);
-            background-color: rgba(0,0,0,0.4);
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            line-height: 22px;
-            text-align: center;
+            top: 6px;
+            left: 6px;
+            font-size: 11px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
         }
         .case-main-content {
             display: flex;
-            gap: 15px;
+            gap: 8px;
             align-items: center;
         }
         .expand-btn {
             background: none;
-            border: 2px solid var(--primary-color);
+            border: 1.5px solid var(--primary-color);
             color: var(--primary-color);
             cursor: pointer;
-            font-size: 1.8rem;
-            font-weight: bold;
             padding: 0;
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            line-height: 36px;
             flex-shrink: 0;
             transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
+        .expand-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .expand-btn.expanded svg {
+            transform: rotate(180deg);
+        }
+
         .expand-btn:hover {
             background: var(--primary-color);
             color: white;
             transform: scale(1.1);
         }
-        body.theme-mint .expand-btn:hover {
-            color: #f0fdf4;
-        }
+        body.theme-mint .expand-btn:hover { color: #f0fdf4; }
         .case-fields {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;
         }
         .field-group {
             display: flex;
             gap: 8px;
             align-items: center;
         }
-        .field-group input { flex-grow: 1; }
         .field-group .copy-btn {
-            padding: 8px 15px;
+            padding: 6px 10px;
             font-size: 12px;
-            background-color: var(--secondary-button-bg);
             flex-shrink: 0;
         }
+        
+        .case-entry .field-group input,
+        .case-entry .case-details-content textarea,
+        .case-entry .case-details-content select {
+            padding: 7px;
+            font-size: 14px;
+            border-radius: 6px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .case-entry .field-group input:focus,
+        .case-entry .case-details-content textarea:focus,
+        .case-entry .case-details-content select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
         .status-indicator {
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             flex-shrink: 0;
         }
@@ -340,22 +379,56 @@
 
         .case-details-content {
             display: none;
-            margin-top: 15px;
-            padding-top: 15px;
+            margin-top: 10px;
+            padding-top: 10px;
             border-top: 1px solid var(--border-color);
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
         .case-details-content.visible { display: flex; }
         .details-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 10px;
+            gap: 8px;
+            margin-top: 8px;
             justify-content: flex-end;
         }
         .details-actions .button {
-            padding: 8px 12px;
+            padding: 6px 10px;
             font-size: 12px;
+        }
+        
+        #daily-mission-list { list-style: none; padding: 0; margin: 0; }
+        #daily-mission-list li { margin-bottom: 8px; font-size: 14px; transition: color 0.3s, opacity 0.3s; }
+        #daily-mission-list li.completed { color: var(--success-color); text-decoration: line-through; opacity: 0.7; }
+        #daily-mission-list li::before { content: '◻️ '; font-family: monospace; }
+        #daily-mission-list li.completed::before { content: '✅ '; }
+        
+        #logbook-textarea { min-height: 50px; resize: vertical; }
+
+        .case-controls { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            gap: 10px; 
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        #case-search-input { 
+            flex-grow: 1;
+            min-width: 80px; 
+        }
+        .filter-buttons-group {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .filter-btn {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
         }
 
         .icon-button {
@@ -478,6 +551,42 @@
             width: 18px;
             height: 18px;
         }
+        
+        /* --- ESTILOS DAS ABAS --- */
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            width: 100%;
+            overflow-x: auto;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-bottom: 3px solid transparent;
+            transition: color 0.3s, border-color 0.3s;
+            flex-shrink: 0;
+        }
+        .tab-button:hover {
+            color: var(--text-color);
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
 
     </style>
 </head>
@@ -486,7 +595,8 @@
 
     <div class="page-container">
         <div class="header-metas">
-            <h1 id="main-title" data-editable="true">Suporte N2 📋</h1>
+            <img src="logo.png" alt="Logo" class="header-logo">
+            <h1 id="main-title" data-editable="true">Suporte N2</h1>
             <button id="settings-button" title="Configurar Metas">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.82l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.82l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
@@ -495,216 +605,222 @@
             </button>
         </div>
         
-        <div class="metas-grid">
-            <!-- 1. CASOS DO DIA -->
-            <div class="meta-card">
-                <div class="card-header">
-                    <h2 id="title-casos" data-editable="true">Casos do Dia</h2>
-                    <p id="subtitle-casos" data-editable="true">Adicione e acompanhe os casos para acesso rápido.</p>
-                </div>
-                <div class="card-body">
-                    <div id="cases-list-container">
-                        <!-- Os cards de casos serão inseridos aqui -->
+        <div class="tabs-container">
+            <button class="tab-button active" data-tab="principal">Principal</button>
+            <button class="tab-button" data-tab="cancelamentos">Cancelamentos</button>
+            <button class="tab-button" data-tab="outros">Outros</button>
+        </div>
+        
+        <div id="tab-principal" class="tab-content active">
+            <div class="metas-grid">
+                <!-- CONTADORES -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-atendimentos" data-editable="true">Contadores</h2>
+                        <p id="subtitle-atendimentos" data-editable="true">Acompanhe o seu progresso para a comissão.</p>
                     </div>
-                    <div class="cases-footer-buttons">
-                        <button type="button" id="addCaseButton" class="button secondary-button">+ Adicionar Caso</button>
-                        <button type="button" id="copyAllCasesButton" class="button secondary-button">Copiar Resumo</button>
-                        <button type="button" id="clearAllCasesButton" class="button reset-button">Limpar Tudo</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2. RESPOSTAS RÁPIDAS -->
-            <div class="meta-card">
-                <div class="card-header">
-                    <h2 id="title-respostas" data-editable="true">Respostas Rápidas</h2>
-                    <p id="subtitle-respostas" data-editable="true">Clique numa resposta para copiar o texto completo.</p>
-                </div>
-                <div class="card-body" id="respostas-container">
-                    <div id="resposta-1" class="summary-box resposta-copiavel" data-full-text="Olá, 
-
-Aqui é Flávio, da empresa Desktop. Tudo bem com você?
-
-Quero te explicar sobre o reparo que estava agendado (protocolo [ XXXX ]): identificamos que a falha não está na sua residência, mas sim em um equipamento externo que leva o sinal até aí.
-
-Por isso, a visita técnica não seria eficaz e precisou ser cancelada.
-
-Mas não se preocupe! Nossa equipe já está cuidando disso e em breve você terá seu serviço restabelecido.
-
-Conte sempre com a Desktop. Estamos juntos para garantir sua melhor experiência!">Visita cancelada por falha externa. Equipa a atuar na correção.</div>
-                    <div id="resposta-2" class="summary-box resposta-copiavel" data-full-text="Olá, cliente Desktop!
-
-Meu nome é Flávio do Suporte Técnico N2 e estou entrando em contato com uma novidade incrível: identificamos uma oportunidade de melhorar ainda mais a qualidade da sua conexão com a Desktop — e o melhor, sem custo adicional!
-
-Nosso time técnico acompanha de perto o desempenho dos nossos clientes e notamos que uma atualização no seu equipamento pode proporcionar uma experiência ainda melhor.
-
-É só me informar a melhor data e horário, e cuidamos do resto!
-
-Fico no aguardo da sua resposta.
-
-Até mais!
-Flávio N2
-Equipe Desktop">Oportunidade de melhoria na conexão sem custo. Agende a atualização.</div>
-                    <div id="resposta-3" class="summary-box resposta-copiavel" data-full-text="Olá, cliente TOP!
-
-Sou o Flávio do Suporte Técnico N2, da empresa DESKTOP INTERNET!
-
-O motivo do nosso contato, é referente ao problema protocolo [ XXXX ] que estava causando falta de acesso à sua internet.
-Foi feita uma atualização e correção via sistema. Conseguimos resolver remotamente o seu problema.
-Poderia nos informar se a sua internet normalizou e se podemos cancelar sua visita?
-
-Seu protocolo de agendamento é: 
-
-Se ainda estiver com problemas, a visita com o técnico no local será mantida para validação.">Problema resolvido remotamente. Confirme se a internet normalizou.</div>
-                    <div id="resposta-4" class="summary-box resposta-copiavel" data-full-text="Nesse caso vamos ter que prosseguir com a visita técnica Ok">Vamos prosseguir com a visita técnica para resolver o problema.</div>
-                    <div id="resposta-5" class="summary-box resposta-copiavel" data-full-text="A equipe N2 do suporte técnico da Desktop agradece e tudo de bom !">A equipa N2 da Desktop agradece. Tenha um ótimo dia!</div>
-                    <div id="resposta-6" class="summary-box resposta-copiavel" data-full-text="Frase reserva">Frase de reserva para uso geral em atendimentos.</div>
-                </div>
-            </div>
-
-            <!-- 3. CANCELAMENTOS -->
-            <div class="meta-card">
-                <div class="card-header">
-                    <h2 id="title-atendimentos" data-editable="true">Contadores Diários</h2>
-                    <p id="subtitle-atendimentos" data-editable="true">Acompanhe o seu progresso para a comissão.</p>
-                </div>
-                <div class="card-body">
-                    <div class="daily-counters-row">
-                        <div class="form-group">
-                            <label id="label-protocolos" for="protocolosAnalisadosInput" data-editable="true">Protocolos Analisados:</label>
-                            <div class="input-with-button-container">
-                                <input type="number" id="protocolosAnalisadosInput" placeholder="0">
-                                <button type="button" id="incrementProtocolosButton" class="button" style="width: 70px;">+1</button>
+                    <div class="card-body">
+                        <div class="daily-counters-row">
+                            <div class="form-group">
+                                <label id="label-protocolos" for="protocolosAnalisadosInput" data-editable="true">Protocolos (Dia):</label>
+                                <div class="input-with-button-container">
+                                    <input type="number" id="protocolosAnalisadosInput" placeholder="0">
+                                    <button type="button" id="incrementProtocolosButton" class="button" style="width: 70px;">+1</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="label-daily-cancellations" for="dailyCancellationsInput" data-editable="true">Cancelamentos (Dia):</label>
+                                <input type="number" id="dailyCancellationsInput" placeholder="0">
                             </div>
                         </div>
-                         <div class="form-group">
-                            <label id="label-daily-cancellations" for="dailyCancellationsInput" data-editable="true">Cancelamentos do Dia:</label>
-                            <input type="number" id="dailyCancellationsInput" placeholder="0">
+                        <div class="form-group">
+                            <label id="label-atendimentos" for="atendimentosInput" data-editable="true">Total de Cancelamentos (Mês):</label>
+                            <input type="number" id="atendimentosInput" placeholder="0">
+                        </div>
+                        <div id="protocol-goals-container" style="margin-top: 15px;"></div>
+                        <div id="metas-container"></div>
+                        <div class="form-group">
+                            <label id="label-category" for="categorySelect" data-editable="true">Categoria do Cancelamento:</label>
+                            <div class="input-with-button-container">
+                                <select id="categorySelect">
+                                    <option id="category-option-1" data-editable="true">Sem Sinal</option>
+                                    <option id="category-option-2" data-editable="true">Massivo</option>
+                                    <option id="category-option-3" data-editable="true">Lentidão</option>
+                                    <option id="category-option-4" data-editable="true">Quedas de Conexão</option>
+                                    <option id="category-option-5" data-editable="true">Outros</option>
+                                </select>
+                                <button type="button" id="incrementButton" class="button" style="width: 70px;">+1</button>
+                            </div>
+                        </div>
+                        <div id="summary-text" class="summary-box">A aguardar os seus dados...</div>
+                    </div>
+                </div>
+                 <!-- HISTÓRICO DE CASOS -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-casos" data-editable="true">Histórico de Casos</h2>
+                        <p id="subtitle-casos" data-editable="true">Pesquise e gira os seus casos.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="case-controls">
+                            <input type="search" id="case-search-input" placeholder="Pesquisar..." class="form-group">
+                            <div class="filter-buttons-group">
+                                <button type="button" class="button secondary-button filter-btn active" data-filter="all">Todos</button>
+                                <button type="button" class="button secondary-button filter-btn" data-filter="Pendente">Pendentes</button>
+                                <button type="button" class="button secondary-button filter-btn" data-filter="Resolvido">Resolvidos</button>
+                            </div>
+                        </div>
+                        <div id="cases-list-container"></div>
+                        <div class="cases-footer-buttons">
+                            <button type="button" id="addCaseButton" class="button secondary-button">+ Adicionar Caso</button>
                         </div>
                     </div>
-                     <div class="form-group">
-                        <label id="label-atendimentos" for="atendimentosInput" data-editable="true">Total de Cancelamentos (Mês):</label>
-                        <input type="number" id="atendimentosInput" placeholder="0">
+                </div>
+                 <!-- RESPOSTAS RÁPIDAS -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-respostas" data-editable="true">Respostas Rápidas</h2>
+                        <p id="subtitle-respostas" data-editable="true">Clique numa resposta para copiar o texto completo.</p>
                     </div>
-                    <div id="protocol-goals-container" style="margin-top: 15px;">
-                        <!-- Metas de protocolo serão inseridas aqui -->
+                    <div class="card-body" id="respostas-container">
+                        <div id="resposta-1" class="summary-box resposta-copiavel" data-full-text="Olá, &#10;&#10;Aqui é Flávio, da empresa Desktop. Tudo bem com você?&#10;&#10;Quero te explicar sobre o reparo que estava agendado (protocolo [ XXXX ]): identificamos que a falha não está na sua residência, mas sim em um equipamento externo que leva o sinal até aí.&#10;&#10;Por isso, a visita técnica não seria eficaz e precisou ser cancelada.&#10;&#10;Mas não se preocupe! Nossa equipe já está cuidando disso e em breve você terá seu serviço restabelecido.&#10;&#10;Conte sempre com a Desktop. Estamos juntos para garantir sua melhor experiência!">Visita cancelada por falha externa. Equipa a atuar na correção.</div>
+                        <div id="resposta-2" class="summary-box resposta-copiavel" data-full-text="Olá, cliente Desktop!&#10;&#10;Meu nome é Flávio do Suporte Técnico N2 e estou entrando em contato com uma novidade incrível: identificamos uma oportunidade de melhorar ainda mais a qualidade da sua conexão com a Desktop — e o melhor, sem custo adicional!&#10;&#10;Nosso time técnico acompanha de perto o desempenho dos nossos clientes e notamos que uma atualização no seu equipamento pode proporcionar uma experiência ainda melhor.&#10;&#10;É só me informar a melhor data e horário, e cuidamos do resto!&#10;&#10;Fico no aguardo da sua resposta.&#10;&#10;Até mais!&#10;Flávio N2&#10;Equipe Desktop">Oportunidade de melhoria na conexão sem custo. Agende a atualização.</div>
+                        <div id="resposta-3" class="summary-box resposta-copiavel" data-full-text="Olá, cliente TOP!&#10;&#10;Sou o Flávio do Suporte Técnico N2, da empresa DESKTOP INTERNET!&#10;&#10;O motivo do nosso contato, é referente ao problema protocolo [ XXXX ] que estava causando falta de acesso à sua internet.&#10;Foi feita uma atualização e correção via sistema. Conseguimos resolver remotamente o seu problema.&#10;Poderia nos informar se a sua internet normalizou e se podemos cancelar sua visita?&#10;&#10;Seu protocolo de agendamento é: &#10;&#10;Se ainda estiver com problemas, a visita com o técnico no local será mantida para validação.">Problema resolvido remotamente. Confirme se a internet normalizou.</div>
+                        <div id="resposta-4" class="summary-box resposta-copiavel" data-full-text="Nesse caso vamos ter que prosseguir com a visita técnica Ok">Vamos prosseguir com a visita técnica para resolver o problema.</div>
+                        <div id="resposta-5" class="summary-box resposta-copiavel" data-full-text="A equipe N2 do suporte técnico da Desktop agradece e tudo de bom !">A equipa N2 da Desktop agradece. Tenha um ótimo dia!</div>
+                        <div id="resposta-6" class="summary-box resposta-copiavel" data-full-text="Frase reserva">Frase de reserva para uso geral em atendimentos.</div>
                     </div>
-                    <div id="metas-container"></div>
-                    <div class="form-group">
-                        <label id="label-category" for="categorySelect" data-editable="true">Categoria do Cancelamento:</label>
-                        <div class="input-with-button-container">
-                            <select id="categorySelect">
-                                <option id="category-option-1" data-editable="true">Sem Sinal</option>
-                                <option id="category-option-2" data-editable="true">Massivo</option>
-                                <option id="category-option-3" data-editable="true">Lentidão</option>
-                                <option id="category-option-4" data-editable="true">Quedas de Conexão</option>
-                                <option id="category-option-5" data-editable="true">Outros</option>
-                            </select>
-                            <button type="button" id="incrementButton" class="button" style="width: 70px;">+1</button>
+                </div>
+                <!-- MISSÃO DIÁRIA -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-daily-mission" data-editable="true">Missão Diária</h2>
+                        <p id="subtitle-daily-mission" data-editable="true">Os seus objetivos para hoje.</p>
+                    </div>
+                    <div class="card-body">
+                        <ul id="daily-mission-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-cancelamentos" class="tab-content">
+             <div class="metas-grid">
+                <!-- DIÁRIO DE BORDO -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-logbook" data-editable="true">Diário de Bordo</h2>
+                        <p id="subtitle-logbook" data-editable="true">Anote eventos importantes do dia.</p>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="logbook-textarea" class="form-group" placeholder="Ex: Instabilidade massiva na região X..."></textarea>
+                    </div>
+                </div>
+                <!-- HISTÓRICO DE ENTRADAS -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-historico" data-editable="true">Histórico de Entradas</h2></div>
+                    <div class="card-body">
+                        <ul id="history-list"></ul>
+                    </div>
+                </div>
+                <!-- PROJEÇÃO -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-projecao" data-editable="true">Projeção de Cancelamentos</h2></div>
+                    <div class="card-body" style="justify-content: center; align-items: center; text-align: center;">
+                        <div id="projection-value" class="projection-value" style="color: var(--warning-color);">0</div>
+                        <div id="projection-formula">A aguardar histórico...</div>
+                        <div id="tier-projection-container" style="margin-top: 15px; font-size: 14px; width: 100%;"></div>
+                    </div>
+                </div>
+                <!-- RESUMO CATEGORIA -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-resumo-categoria" data-editable="true">Resumo por Categoria</h2></div>
+                    <div class="card-body">
+                        <div id="category-chart-container">
+                            <canvas id="categoryPieChart"></canvas>
+                        </div>
+                        <ul id="category-summary-list" style="margin-top: 15px;"></ul>
+                    </div>
+                </div>
+                <!-- GRÁFICO -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-grafico" data-editable="true">Gráfico de Tendência</h2></div>
+                    <div class="card-body">
+                        <div id="chart-container"><canvas id="trendChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-outros" class="tab-content">
+             <div class="metas-grid">
+                <!-- LINKS -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <h2 id="title-links" data-editable="true">Links Úteis</h2>
+                            <button id="senhas-button" title="Ver Senhas" class="icon-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                            </button>
+                        </div>
+                        <p id="subtitle-links" data-editable="true">Aceda a sistemas importantes com um clique.</p>
+                    </div>
+                    <div class="card-body" id="links-uteis-container-body">
+                        <div id="links-uteis-container">
+                            <a href="http://172.30.0.141:8080" target="_blank" class="link-util" id="link-text-1" data-editable="true">SIG</a>
+                            <a href="http://172.30.0.141:8080/oportunidades" target="_blank" class="link-util" id="link-text-2" data-editable="true">SIG - Oportunidades</a>
+                            <a href="https://172.30.0.141" target="_blank" class="link-util" id="link-text-3" data-editable="true">Deskpedia</a>
+                            <a href="https://desktopsa.my.salesforce.com" target="_blank" class="link-util" id="link-text-4" data-editable="true">SalesForce</a>
+                            <a href="https://desktop.matrixdobrasil.ai/Painel/login" target="_blank" class="link-util" id="link-text-5" data-editable="true">Matrix Chat</a>
+                            <a href="http://sis.desktop.com.br" target="_blank" class="link-util" id="link-text-6" data-editable="true">SIS</a>
+                            <a href="https://adm.desktop.com.br" target="_blank" class="link-util" id="link-text-7" data-editable="true">ADM</a>
+                            <a href="https://login.lg.com.br/login/desktop" target="_blank" class="link-util" id="link-text-8" data-editable="true">LG</a>
+                            <a href="https://webmail.desktop.com.br" target="_blank" class="link-util" id="link-text-9" data-editable="true">WebMail</a>
+                            <a href="https://netcore.desktop.localdomain/weboss/reprovisiona_gpon" target="_blank" class="link-util" id="link-text-10" data-editable="true">NetCore</a>
+                            <a href="https://desktopcombr.sharepoint.com/sites/EQUIPEDEPROCESSOS/repositorio_materiais/SitePages/LearningTeamHome.aspx" target="_blank" class="link-util" id="link-text-11" data-editable="true">Novo Pulpo</a>
+                            <a href="https://docs.google.com/spreadsheets/d/1zkNxgYOs8iWMSwdgtwV4-g0RxmkoI_jgdclkpGjF3Rc/edit#gid=0" target="_blank" class="link-util" id="link-text-12" data-editable="true">Cancelados COP</a>
+                            <a href="https://desktopcombr.sharepoint.com/:p:/r/sites/EQUIPEDEPROCESSOS/repositorio_materiais/_layouts/15/doc2.aspx?sourcedoc=%7BE78AE514-642A-4F46-8FBB-2C54C51C9945%7D&file=MODELOS%20DE%20EQUIPAMENTOS.pptx&action=edit&mobileredirect=true" target="_blank" class="link-util" id="link-text-13" data-editable="true">Modelos de Roteadores</a>
+                            <a href="https://www.flavioitech.com" target="_blank" class="link-util" id="link-text-14" data-editable="true">Meu Site</a>
                         </div>
                     </div>
-                    <div id="summary-text" class="summary-box">A aguardar os seus dados...</div>
                 </div>
-            </div>
-
-            <!-- 4. HISTÓRICO -->
-            <div class="meta-card">
-                <div class="card-header"><h2 id="title-historico" data-editable="true">Histórico</h2></div>
-                <div class="card-body">
-                    <ul id="history-list"></ul>
-                </div>
-            </div>
-            
-            <!-- DEMAIS CARDS -->
-            <div class="meta-card">
-                <div class="card-header"><h2 id="title-comissao" data-editable="true">Comissão Estimada</h2></div>
-                <div class="card-body" style="justify-content: center; align-items: center;">
-                    <div id="bonus-value" class="bonus-value" style="color: var(--success-color);">R$ 0,00</div>
-                    <div id="bonus-formula">A aguardar dados...</div>
-                </div>
-            </div>
-            <div class="meta-card">
-                <div class="card-header"><h2 id="title-projecao" data-editable="true">Projeção de Cancelamentos</h2></div>
-                <div class="card-body" style="justify-content: center; align-items: center;">
-                    <div id="projection-value" class="projection-value" style="color: var(--warning-color);">0</div>
-                    <div id="projection-formula">A aguardar histórico...</div>
-                </div>
-            </div>
-            <div class="meta-card">
-                <div class="card-header"><h2 id="title-resumo-categoria" data-editable="true">Resumo por Categoria</h2></div>
-                <div class="card-body">
-                    <div id="category-chart-container">
-                        <canvas id="categoryPieChart"></canvas>
+                <!-- COMISSÃO -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-comissao" data-editable="true">Comissão Estimada</h2></div>
+                    <div class="card-body" style="justify-content: center; align-items: center;">
+                        <div id="bonus-value" class="bonus-value" style="color: var(--success-color);">R$ 0,00</div>
+                        <div id="bonus-formula">A aguardar dados...</div>
                     </div>
-                    <ul id="category-summary-list" style="margin-top: 15px;"></ul>
                 </div>
-            </div>
-            <div class="meta-card">
-                <div class="card-header"><h2 id="title-conquistas" data-editable="true">Conquistas 🏆</h2></div>
-                <div class="card-body">
-                    <ul id="achievement-list">
-                        <li id="achieve-first-save" class="achievement">Guardar o progresso pela primeira vez.</li>
-                        <li id="achieve-bonus1" class="achievement">Atingir a primeira faixa de comissão.</li>
-                        <li id="achieve-max-bonus" class="achievement">Atingir a meta máxima pela primeira vez.</li>
-                        <li id="achieve-100-cancellations" class="achievement">Atingir 100 cancelamentos no mês.</li>
-                        <li id="achieve-200-cancellations" class="achievement">Atingir 200 cancelamentos no mês.</li>
-                        <li id="achieve-5day-streak" class="achievement">Guardar o progresso por 5 dias seguidos.</li>
-                        <li id="achieve-10-day-streak" class="achievement">Guardar o progresso por 10 dias seguidos.</li>
-                        <li id="achieve-30-days" class="achievement">Guardar o progresso em 30 dias diferentes.</li>
-                        <li id="achieve-first-case" class="achievement">Adicionar o seu primeiro caso.</li>
-                        <li id="achieve-10-cases" class="achievement">Registar 10 casos na lista.</li>
-                        <li id="achieve-25-cases" class="achievement">Registar 25 casos na lista.</li>
-                        <li id="achieve-clear-cases" class="achievement">Organizar a casa e limpar a lista de casos.</li>
-                        <li id="achieve-all-status" class="achievement">Utilizar todos os 3 status de caso.</li>
-                        <li id="achieve-all-categories" class="achievement">Utilizar 5 categorias diferentes.</li>
-                        <li id="achieve-copy-response" class="achievement">Copiar uma resposta rápida pela primeira vez.</li>
-                        <li id="achieve-use-all-quick-responses" class="achievement">Utilizar todas as respostas rápidas.</li>
-                        <li id="achieve-customize" class="achievement">Personalizar os textos da aplicação.</li>
-                        <li id="achieve-change-theme" class="achievement">Personalizar o visual com um novo tema.</li>
-                        <li id="achieve-export" class="achievement">Fazer o primeiro backup dos seus dados.</li>
-                        <li id="achieve-50-protocols" class="achievement">Analisar 50 protocolos num dia.</li>
-                        <li id="achieve-monthly-protocol-goal" class="achievement">Atingir a meta mensal de 1300 protocolos.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="meta-card">
-                <div class="card-header"><h2 id="title-grafico" data-editable="true">Gráfico de Tendência</h2></div>
-                <div class="card-body">
-                    <div id="chart-container"><canvas id="trendChart"></canvas></div>
-                </div>
-            </div>
-
-            <!-- SEÇÃO DE LINKS -->
-            <div class="meta-card">
-                <div class="card-header">
-                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                        <h2 id="title-links" data-editable="true">Links Úteis</h2>
-                        <button id="senhas-button" title="Ver Senhas" class="icon-button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-                        </button>
-                    </div>
-                    <p id="subtitle-links" data-editable="true">Aceda a sistemas importantes com um clique.</p>
-                </div>
-                <div class="card-body" id="links-uteis-container-body">
-                    <div id="links-uteis-container">
-                         <a href="http://172.30.0.141:8080" target="_blank" class="link-util" id="link-text-1" data-editable="true">SIG</a>
-                        <a href="http://172.30.0.141:8080/oportunidades" target="_blank" class="link-util" id="link-text-2" data-editable="true">SIG - Oportunidades</a>
-                        <a href="https://172.30.0.141" target="_blank" class="link-util" id="link-text-3" data-editable="true">Deskpedia</a>
-                        <a href="https://desktopsa.my.salesforce.com" target="_blank" class="link-util" id="link-text-4" data-editable="true">SalesForce</a>
-                        <a href="https://desktop.matrixdobrasil.ai/Painel/login" target="_blank" class="link-util" id="link-text-5" data-editable="true">Matrix Chat</a>
-                        <a href="http://sis.desktop.com.br" target="_blank" class="link-util" id="link-text-6" data-editable="true">SIS</a>
-                        <a href="https://adm.desktop.com.br" target="_blank" class="link-util" id="link-text-7" data-editable="true">ADM</a>
-                        <a href="https://login.lg.com.br/login/desktop" target="_blank" class="link-util" id="link-text-8" data-editable="true">LG</a>
-                        <a href="https://webmail.desktop.com.br" target="_blank" class="link-util" id="link-text-9" data-editable="true">WebMail</a>
-                        <a href="https://netcore.desktop.localdomain/weboss/reprovisiona_gpon" target="_blank" class="link-util" id="link-text-10" data-editable="true">NetCore</a>
-                        <a href="https://desktopcombr.sharepoint.com/sites/EQUIPEDEPROCESSOS/repositorio_materiais/SitePages/LearningTeamHome.aspx" target="_blank" class="link-util" id="link-text-11" data-editable="true">Novo Pulpo</a>
-                        <a href="https://docs.google.com/spreadsheets/d/1zkNxgYOs8iWMSwdgtwV4-g0RxmkoI_jgdclkpGjF3Rc/edit#gid=0" target="_blank" class="link-util" id="link-text-12" data-editable="true">Cancelados COP</a>
-                        <a href="https://desktopcombr.sharepoint.com/:p:/r/sites/EQUIPEDEPROCESSOS/repositorio_materiais/_layouts/15/doc2.aspx?sourcedoc=%7BE78AE514-642A-4F46-8FBB-2C54C51C9945%7D&file=MODELOS%20DE%20EQUIPAMENTOS.pptx&action=edit&mobileredirect=true" target="_blank" class="link-util" id="link-text-13" data-editable="true">Modelos de Roteadores</a>
-                        <a href="https://www.flavioitech.com" target="_blank" class="link-util" id="link-text-14" data-editable="true">Meu Site</a>
+                <!-- CONQUISTAS -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-conquistas" data-editable="true">Conquistas 🏆</h2></div>
+                    <div class="card-body">
+                        <ul id="achievement-list">
+                            <li id="achieve-first-save" class="achievement">Guardar o progresso pela primeira vez.</li>
+                            <li id="achieve-bonus1" class="achievement">Atingir a primeira faixa de comissão.</li>
+                            <li id="achieve-max-bonus" class="achievement">Atingir a meta máxima pela primeira vez.</li>
+                            <li id="achieve-100-cancellations" class="achievement">Atingir 100 cancelamentos no mês.</li>
+                            <li id="achieve-200-cancellations" class="achievement">Atingir 200 cancelamentos no mês.</li>
+                            <li id="achieve-5day-streak" class="achievement">Guardar o progresso por 5 dias seguidos.</li>
+                            <li id="achieve-10-day-streak" class="achievement">Guardar o progresso por 10 dias seguidos.</li>
+                            <li id="achieve-30-days" class="achievement">Guardar o progresso em 30 dias diferentes.</li>
+                            <li id="achieve-first-case" class="achievement">Adicionar o seu primeiro caso.</li>
+                            <li id="achieve-10-cases" class="achievement">Registar 10 casos na lista.</li>
+                            <li id="achieve-25-cases" class="achievement">Registar 25 casos na lista.</li>
+                            <li id="achieve-all-status" class="achievement">Utilizar todos os 3 status de caso.</li>
+                            <li id="achieve-all-categories" class="achievement">Utilizar 5 categorias diferentes.</li>
+                            <li id="achieve-copy-response" class="achievement">Copiar uma resposta rápida pela primeira vez.</li>
+                            <li id="achieve-use-all-quick-responses" class="achievement">Utilizar todas as respostas rápidas.</li>
+                            <li id="achieve-customize" class="achievement">Personalizar os textos da aplicação.</li>
+                            <li id="achieve-change-theme" class="achievement">Personalizar o visual com um novo tema.</li>
+                            <li id="achieve-export" class="achievement">Fazer o primeiro backup dos seus dados.</li>
+                            <li id="achieve-50-protocols" class="achievement">Analisar 50 protocolos num dia.</li>
+                            <li id="achieve-monthly-protocol-goal" class="achievement">Atingir a meta mensal de 1300 protocolos.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="action-buttons">
@@ -759,6 +875,7 @@ Se ainda estiver com problemas, a visita com o técnico no local será mantida p
                     <button type="button" id="importButton" class="button secondary-button">Importar Dados</button>
                     <button type="button" id="exportButton" class="button secondary-button">Exportar Dados</button>
                     <button type="button" id="installAppButton" class="button">Instalar App</button>
+                    <button type="button" id="clearCacheButton" class="button secondary-button">Limpar Cache</button>
                     <button type="button" id="resetButton" class="button reset-button">Repor Todos os Dados</button>
                 </div>
             </div>
@@ -866,6 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const historyListEl = document.getElementById('history-list');
     const projectionValueEl = document.getElementById('projection-value');
     const projectionFormulaEl = document.getElementById('projection-formula');
+    const tierProjectionContainer = document.getElementById('tier-projection-container');
     const trendChartCanvas = document.getElementById('trendChart');
     const categoryPieChartCanvas = document.getElementById('categoryPieChart');
     const installAppButton = document.getElementById('installAppButton');
@@ -876,13 +994,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const reminderTimeInput = document.getElementById('reminderTime');
     const casesListContainer = document.getElementById('cases-list-container');
     const addCaseButton = document.getElementById('addCaseButton');
-    const clearAllCasesButton = document.getElementById('clearAllCasesButton');
-    const copyAllCasesButton = document.getElementById('copyAllCasesButton');
+    const caseSearchInput = document.getElementById('case-search-input');
+    const caseFilterButtons = document.querySelectorAll('.filter-btn');
     const themeToggleButton = document.getElementById('themeToggleButton');
     const senhasButton = document.getElementById('senhas-button');
     const senhasModal = document.getElementById('senhas-modal');
     const closeSenhasModal = document.getElementById('close-senhas-modal');
     const senhasContainer = document.getElementById('senhas-container');
+    const clearCacheButton = document.getElementById('clearCacheButton');
+    const dailyMissionList = document.getElementById('daily-mission-list');
+    const logbookTextarea = document.getElementById('logbook-textarea');
+    const tabsContainer = document.querySelector('.tabs-container');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
 
     // --- VARIÁVEIS DE ESTADO ---
     let trendChart;
@@ -892,23 +1017,26 @@ document.addEventListener('DOMContentLoaded', () => {
     let notificationTimeout;
     let previousDailyCancellations = 0;
     const themes = ['dark', 'light', 'mint', 'sunset', 'graphite'];
+    let dailyCopyCount = 0;
     
     // --- CONSTANTES ---
     const DAILY_PROTOCOL_GOAL = 50;
     const MONTHLY_PROTOCOL_GOAL = 1300;
+    const TOTAL_WORKING_DAYS = 26;
     
     // --- ESTRUTURAS DE DADOS ---
     let metas = JSON.parse(localStorage.getItem('customMetas')) || [
         { id: 1, target: 10, reward: 0.24 }, { id: 2, target: 20, reward: 0.48 }, { id: 3, target: 30, reward: 0.70 }
     ];
-    let cases = JSON.parse(localStorage.getItem('casesList')) || [];
+    let allCases = JSON.parse(localStorage.getItem('casesList')) || [];
     let baseSalary = parseFloat(localStorage.getItem('baseSalary')) || 0;
     let history = JSON.parse(localStorage.getItem('performanceHistory')) || [];
     let categoryCounts = JSON.parse(localStorage.getItem('categoryCounts')) || {};
-    let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || {};
+    let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || [];
     let reminderSettings = JSON.parse(localStorage.getItem('reminderSettings')) || { enabled: false, time: '18:00' };
     let usedStatuses = new Set(JSON.parse(localStorage.getItem('usedStatuses')) || []);
     let usedQuickResponses = new Set(JSON.parse(localStorage.getItem('usedQuickResponses')) || []);
+    let dailyLogbook = JSON.parse(localStorage.getItem('dailyLogbook')) || {};
     
     // --- FUNÇÕES AUXILIARES ---
     const vibrate = () => { if ('vibrate' in navigator) navigator.vibrate(50); };
@@ -931,6 +1059,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return new Date();
         }
     };
+    const getTodayDateString = () => new Date().toLocaleDateString('pt-BR');
 
     // --- FUNÇÃO DE CÓPIA UNIVERSAL ---
     function copyToClipboard(text, successMessage) {
@@ -975,7 +1104,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (customTexts) {
             document.querySelectorAll('[data-editable="true"]').forEach(el => {
                  if (customTexts[el.id]) {
-                    // Trata o caso especial das respostas rápidas
                     if (el.classList.contains('resposta-copiavel') && typeof customTexts[el.id] === 'object') {
                         el.innerHTML = customTexts[el.id].summary;
                         el.dataset.fullText = customTexts[el.id].fullText;
@@ -990,7 +1118,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveCustomTexts = function() {
         const customTexts = {};
         document.querySelectorAll('[data-editable="true"]').forEach(el => {
-             // Trata o caso especial das respostas rápidas
              if (el.classList.contains('resposta-copiavel')) {
                 customTexts[el.id] = {
                     summary: el.innerHTML,
@@ -1071,8 +1198,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (history.length >= 30) unlockAchievement('achieve-30-days', 'Guardou por 30 dias diferentes!');
         if (currentValue >= 100) unlockAchievement('achieve-100-cancellations', 'Atingiu 100 cancelamentos!');
         if (currentValue >= 200) unlockAchievement('achieve-200-cancellations', 'Atingiu 200 cancelamentos!');
-        if (cases.length >= 10) unlockAchievement('achieve-10-cases', 'Registou 10 casos!');
-        if (cases.length >= 25) unlockAchievement('achieve-25-cases', 'Registou 25 casos!');
+        if (allCases.length >= 10) unlockAchievement('achieve-10-cases', 'Registou 10 casos!');
+        if (allCases.length >= 25) unlockAchievement('achieve-25-cases', 'Registou 25 casos!');
         if (usedStatuses.size >= 3) unlockAchievement('achieve-all-status', 'Usou todos os status de caso!');
         if (currentProtocols >= 50) unlockAchievement('achieve-50-protocols', 'Analisou 50 protocolos hoje!');
         
@@ -1098,33 +1225,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }, timeToReminder);
     };
 
-    // --- LÓGICA PARA A LISTA DE CASOS ---
-    const saveCases = () => localStorage.setItem('casesList', JSON.stringify(cases));
-    const renderCases = () => {
+    // --- LÓGICA PARA HISTÓRICO DE CASOS ---
+    const saveCases = () => localStorage.setItem('casesList', JSON.stringify(allCases));
+    const renderCases = (filter = 'all', searchTerm = '') => {
         casesListContainer.innerHTML = '';
-        if (cases.length === 0) {
-            casesListContainer.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary-color); text-align: center;">Nenhum caso adicionado ainda.</p>';
+        
+        const normalizedSearch = searchTerm.toLowerCase().trim();
+        const filteredCases = allCases.filter(caseItem => {
+            const statusMatch = filter === 'all' || caseItem.status === filter;
+            const searchMatch = !normalizedSearch ||
+                caseItem.protocol?.toLowerCase().includes(normalizedSearch) ||
+                caseItem.phone?.toLowerCase().includes(normalizedSearch) ||
+                caseItem.description?.toLowerCase().includes(normalizedSearch);
+            return statusMatch && searchMatch;
+        });
+
+        if (filteredCases.length === 0) {
+            casesListContainer.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary-color); text-align: center;">Nenhum caso encontrado.</p>';
             return;
         }
 
-        cases.forEach((caseItem, index) => {
+        filteredCases.forEach((caseItem) => {
             const statusClass = caseItem.status?.replace(' ', '-') || 'Pendente';
             const entryDiv = document.createElement('div');
             entryDiv.className = 'case-entry';
-            entryDiv.setAttribute('data-index', index);
+            entryDiv.setAttribute('data-id', caseItem.id);
 
             entryDiv.innerHTML = `
-                <div class="case-number">${index + 1}</div>
                 <div class="case-main-content">
-                    <button class="expand-btn">+</button>
+                    <button class="expand-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
                     <div class="case-fields">
                         <div class="field-group">
                             <input type="text" class="protocol-input" value="${caseItem.protocol || ''}" placeholder="Protocolo">
-                            <button class="button copy-btn copy-protocol-btn">Copiar</button>
+                            <button class="button secondary-button copy-btn copy-protocol-btn">Copiar</button>
                         </div>
                         <div class="field-group">
                             <input type="text" class="phone-input" value="${caseItem.phone || ''}" placeholder="Telefone">
-                            <button class="button copy-btn copy-phone-btn">Copiar</button>
+                            <button class="button secondary-button copy-btn copy-phone-btn">Copiar</button>
                         </div>
                     </div>
                     <div class="status-indicator status-${statusClass}" title="${caseItem.status || 'Pendente'}"></div>
@@ -1136,6 +1275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <option value="Em Andamento" ${caseItem.status === 'Em Andamento' ? 'selected' : ''}>Em Andamento</option>
                         <option value="Resolvido" ${caseItem.status === 'Resolvido' ? 'selected' : ''}>Resolvido</option>
                     </select>
+                     <div style="font-size: 11px; color: var(--text-secondary-color); text-align: right; margin-top: 5px;">Criado em: ${caseItem.date}</div>
                     <div class="details-actions">
                         <button class="button secondary-button copy-case-all-btn">Copiar Tudo</button>
                         <button class="button reset-button remove-case-btn">Excluir Caso</button>
@@ -1145,12 +1285,38 @@ document.addEventListener('DOMContentLoaded', () => {
             casesListContainer.appendChild(entryDiv);
         });
     };
+    
+    // --- LÓGICA DO DIÁRIO DE BORDO E MISSÃO DIÁRIA ---
+    const saveLogbook = () => {
+        const today = getTodayDateString();
+        dailyLogbook[today] = logbookTextarea.value;
+        localStorage.setItem('dailyLogbook', JSON.stringify(dailyLogbook));
+    };
+    
+    const updateDailyMission = () => {
+        const protocols = parseInt(protocolosAnalisadosInput.value) || 0;
+        const savedToday = history.some(h => h.date === getTodayDateString());
+        const dailyCancellations = parseInt(dailyCancellationsInput.value) || 0;
+        const casesAddedToday = allCases.filter(c => c.date === getTodayDateString()).length;
+
+        const missions = [
+            { id: 'mission-protocols', text: `Analisar ${DAILY_PROTOCOL_GOAL} protocolos`, completed: protocols >= DAILY_PROTOCOL_GOAL },
+            { id: 'mission-daily-cancellations', text: `Registar 6 cancelamentos hoje (${dailyCancellations}/6)`, completed: dailyCancellations >= 6 },
+            { id: 'mission-copy-responses', text: `Copiar 20 respostas (${dailyCopyCount}/20)`, completed: dailyCopyCount >= 20 },
+            { id: 'mission-new-cases', text: `Adicionar 3 novos casos (${casesAddedToday}/3)`, completed: casesAddedToday >= 3 },
+            { id: 'mission-save', text: 'Guardar o progresso de hoje', completed: savedToday }
+        ];
+
+        dailyMissionList.innerHTML = missions.map(mission => 
+            `<li id="${mission.id}" class="${mission.completed ? 'completed' : ''}">${mission.text}</li>`
+        ).join('');
+    };
 
 
     // --- FUNÇÕES PRINCIPAIS DE RENDERIZAÇÃO E CÁLCULO ---
     const renderAtendimentoMetas = () => {
         metasContainer.innerHTML = '';
-        metas.forEach(meta => {
+        metas.sort((a, b) => a.target - b.target).forEach(meta => {
             const metaElement = document.createElement('div');
             metaElement.className = 'meta-item';
             metaElement.innerHTML = `<div class="meta-header"><span class="meta-label">Faixa ${meta.id}: ${meta.target} (${(meta.reward || 0) * 100}%)</span><span class="meta-percentage" id="meta${meta.id}-percent">0%</span></div><div class="progress-bar-background"><div class="progress-bar-fill" id="meta${meta.id}-fill"></div></div>`;
@@ -1238,28 +1404,52 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     const updateProjection = () => {
-        const monthHistory = history.map(e => ({...e, dateObj: parseDate(e.date)})).filter(e => e.dateObj.getMonth() === new Date().getMonth()).sort((a, b) => a.dateObj - b.dateObj);
+        const currentMonth = new Date().getMonth();
+        const monthHistory = history.map(e => ({...e, dateObj: parseDate(e.date)}))
+                                  .filter(e => e.dateObj.getMonth() === currentMonth)
+                                  .sort((a, b) => a.dateObj - b.dateObj);
+        
+        const daysWithEntries = new Set(monthHistory.map(h => h.date)).size;
+
         if (monthHistory.length < 2) {
+            projectionValueEl.textContent = "N/A";
             projectionFormulaEl.textContent = "Guarde por pelo menos 2 dias neste mês.";
-            projectionValueEl.textContent = "N/A"; return;
+            tierProjectionContainer.innerHTML = '';
+            return;
         }
         const firstEntry = monthHistory[0];
         const lastEntry = monthHistory[monthHistory.length - 1];
-        
         const cancellationsInPeriod = lastEntry.atendimentos - firstEntry.atendimentos;
-        const daysElapsed = Math.round((lastEntry.dateObj.getTime() - firstEntry.dateObj.getTime()) / (1000 * 3600 * 24)) + 1;
 
-        if (daysElapsed <= 1 || cancellationsInPeriod < 0) {
-            projectionFormulaEl.textContent = "Dados insuficientes para projeção.";
-            projectionValueEl.textContent = "N/A"; return;
+        if (daysWithEntries <= 1 || cancellationsInPeriod < 0) {
+            projectionFormulaEl.textContent = "Dados insuficientes.";
+            projectionValueEl.textContent = "N/A";
+        } else {
+            const dailyAvg = cancellationsInPeriod / (daysWithEntries - 1);
+            const projectedTotal = firstEntry.atendimentos + (dailyAvg * (TOTAL_WORKING_DAYS - 1));
+            projectionValueEl.textContent = Math.round(projectedTotal);
+            projectionFormulaEl.textContent = `Média de ${dailyAvg.toFixed(1)}/dia. Projeção para ${TOTAL_WORKING_DAYS} dias úteis.`;
         }
         
-        const dailyAvg = cancellationsInPeriod / (daysElapsed - 1);
-        const totalWorkingDays = 26;
-        const projectedTotal = (dailyAvg * totalWorkingDays);
-        
-        projectionValueEl.textContent = Math.round(projectedTotal);
-        projectionFormulaEl.textContent = `Média de ${dailyAvg.toFixed(1)}/dia. Projeção para ${totalWorkingDays} dias.`;
+        const currentValue = parseInt(atendimentosInput.value) || 0;
+        const remainingWorkingDays = TOTAL_WORKING_DAYS - daysWithEntries;
+
+        if (remainingWorkingDays <= 0) {
+            tierProjectionContainer.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary-color);">Mês de trabalho concluído.</p>';
+        } else {
+            let tierHtml = `<p style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Média diária necessária:</p><ul style="list-style: none; padding: 0; margin: 0; text-align: left; font-size: 13px;">`;
+            metas.forEach(meta => {
+                const remainingCancellations = meta.target - currentValue;
+                if (remainingCancellations <= 0) {
+                    tierHtml += `<li style="color: var(--success-color); margin-bottom: 4px;">✅ <strong>Faixa ${meta.id} (${meta.target}):</strong> Atingida!</li>`;
+                } else {
+                    const requiredAvg = remainingCancellations / remainingWorkingDays;
+                    tierHtml += `<li style="margin-bottom: 4px;">🎯 <strong>Faixa ${meta.id} (${meta.target}):</strong> Faltam ${remainingCancellations}. Média de <strong>${requiredAvg.toFixed(1)}/dia</strong>.</li>`;
+                }
+            });
+            tierHtml += '</ul>';
+            tierProjectionContainer.innerHTML = tierHtml;
+        }
     };
     const renderHistory = () => {
         historyListEl.innerHTML = '';
@@ -1274,6 +1464,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const renderTrendChart = () => {
         if (trendChart) trendChart.destroy();
+        if(!document.getElementById('tab-cancelamentos').classList.contains('active')) return;
         const labels = history.map(e => e.date);
         const data = history.map(e => e.atendimentos);
         const textColor = getComputedStyle(document.body).getPropertyValue('--text-secondary-color');
@@ -1286,6 +1477,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const renderCategoryPieChart = () => {
         if (categoryPieChart) categoryPieChart.destroy();
+        if(!document.getElementById('tab-cancelamentos').classList.contains('active')) return;
         
         const labels = Object.keys(categoryCounts).filter(cat => categoryCounts[cat] > 0);
         const data = Object.values(categoryCounts).filter(count => count > 0);
@@ -1327,7 +1519,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
     
-    // --- FUNÇÕES DE DADOS ---
     function updateAll() {
         renderHistory();
         renderAtendimentoMetas();
@@ -1337,12 +1528,13 @@ document.addEventListener('DOMContentLoaded', () => {
         renderAchievements();
         checkAchievements();
         updateProjection();
+        updateDailyMission();
         renderTrendChart();
         renderCategoryPieChart();
-        renderCases();
+        renderCases(document.querySelector('.filter-btn.active')?.dataset.filter || 'all', caseSearchInput.value);
     }
     function saveData() {
-        const date = new Date().toLocaleDateString('pt-BR');
+        const date = getTodayDateString();
         const newEntry = { 
             date, 
             atendimentos: parseInt(atendimentosInput.value) || 0,
@@ -1351,8 +1543,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         const todayIndex = history.findIndex(entry => entry.date === date);
         if (todayIndex > -1) { 
-            // Para o total de atendimentos, não somamos, apenas atualizamos para o valor atual.
-            // Para protocolos, a lógica é que o valor no input é o total do dia.
             history[todayIndex] = newEntry;
         } else { 
             history.push(newEntry); 
@@ -1364,33 +1554,39 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('protocolosAnalisadosCount', protocolosAnalisadosInput.value);
         localStorage.setItem('categoryCounts', JSON.stringify(categoryCounts));
         localStorage.setItem('dailyCancellationsCount', dailyCancellationsInput.value);
+        localStorage.setItem('dailyCopyCount', dailyCopyCount);
+        saveLogbook();
         unlockAchievement('achieve-first-save', 'Primeiro progresso guardado!');
         updateAll();
         showToast('Progresso guardado com sucesso!', 'success');
     }
     function loadData() {
-        const todayStr = new Date().toLocaleDateString('pt-BR');
+        const todayStr = getTodayDateString();
         const lastUsedDate = localStorage.getItem('lastUsedDate');
         
         let dailyCount = 0;
         let dailyProtocols = 0;
-        // Se a data do último uso for hoje, carrega os contadores diários
+        dailyCopyCount = 0;
+
         if (todayStr === lastUsedDate) {
             dailyCount = parseInt(localStorage.getItem('dailyCancellationsCount')) || 0;
             dailyProtocols = parseInt(localStorage.getItem('protocolosAnalisadosCount')) || 0;
+            dailyCopyCount = parseInt(localStorage.getItem('dailyCopyCount')) || 0;
         }
         
         dailyCancellationsInput.value = dailyCount;
         protocolosAnalisadosInput.value = dailyProtocols;
         previousDailyCancellations = dailyCount;
         
-        // Atualiza a data do último uso para hoje, para resetar os contadores amanhã
         localStorage.setItem('lastUsedDate', todayStr);
 
         atendimentosInput.value = localStorage.getItem('atendimentosCount') || '';
         baseSalaryInput.value = baseSalary > 0 ? baseSalary : '';
         reminderEnabledInput.checked = reminderSettings.enabled;
         reminderTimeInput.value = reminderSettings.time;
+
+        logbookTextarea.value = dailyLogbook[todayStr] || '';
+        
         updateAll();
     }
     function resetData() {
@@ -1409,7 +1605,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 atendimentos: localStorage.getItem('atendimentosCount'),
                 protocolosAnalisados: localStorage.getItem('protocolosAnalisadosCount')
             },
-            casesList: cases,
+            casesList: allCases,
             baseSalary: baseSalary,
             customMetas: metas,
             history: history,
@@ -1417,7 +1613,8 @@ document.addEventListener('DOMContentLoaded', () => {
             categoryCounts: categoryCounts,
             unlockedAchievements: unlockedAchievements,
             reminderSettings: reminderSettings,
-            usedQuickResponses: Array.from(usedQuickResponses)
+            usedQuickResponses: Array.from(usedQuickResponses),
+            dailyLogbook: dailyLogbook
         };
         const dateStr = new Date().toISOString().split('T')[0];
         
@@ -1434,10 +1631,12 @@ document.addEventListener('DOMContentLoaded', () => {
         txtContent += `Total de Cancelamentos (Mês): ${atendimentosInput.value || 0}\n`;
         txtContent += `Cancelamentos do Dia: ${dailyCancellationsInput.value || 0}\n`;
         txtContent += `Protocolos Analisados (Dia): ${protocolosAnalisadosInput.value || 0}\n\n`;
-        txtContent += `--- CASOS DO DIA (${cases.length}) ---\n`;
-        if(cases.length > 0) {
-            cases.forEach((c, i) => {
-                txtContent += `${i+1}. Protocolo: ${c.protocol || 'N/A'} | Telefone: ${c.phone || 'N/A'} | Status: ${c.status}\n`;
+        txtContent += `--- DIÁRIO DE BORDO ---\n`;
+        txtContent += `${logbookTextarea.value || 'Nenhuma nota hoje.'}\n\n`;
+        txtContent += `--- HISTÓRICO DE CASOS (${allCases.length}) ---\n`;
+        if(allCases.length > 0) {
+            allCases.forEach((c, i) => {
+                txtContent += `${i+1}. [${c.date}] Protocolo: ${c.protocol || 'N/A'} | Telefone: ${c.phone || 'N/A'} | Status: ${c.status}\n`;
                 txtContent += `   Descrição: ${c.description || 'Nenhuma'}\n`;
             });
         } else {
@@ -1483,6 +1682,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (importedData.unlockedAchievements) localStorage.setItem('unlockedAchievements', JSON.stringify(importedData.unlockedAchievements));
                         if (importedData.reminderSettings) localStorage.setItem('reminderSettings', JSON.stringify(importedData.reminderSettings));
                         if (importedData.usedQuickResponses) localStorage.setItem('usedQuickResponses', JSON.stringify(Array.from(usedQuickResponses)));
+                        if (importedData.dailyLogbook) localStorage.setItem('dailyLogbook', JSON.stringify(importedData.dailyLogbook));
                         showToast('Dados importados com sucesso!', 'success');
                         setTimeout(() => window.location.reload(), 1000);
                     }
@@ -1515,17 +1715,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (theme !== 'dark') {
             document.body.classList.add(`theme-${theme}`);
         }
-        // Atualiza a cor do gráfico para corresponder ao tema
         renderTrendChart();
         renderCategoryPieChart();
     }
 
     // --- EVENT LISTENERS ---
-    atendimentosInput.addEventListener('input', () => { localStorage.setItem('atendimentosCount', atendimentosInput.value); updateAtendimentoProgress(); });
+    atendimentosInput.addEventListener('input', () => { 
+        localStorage.setItem('atendimentosCount', atendimentosInput.value); 
+        updateAtendimentoProgress();
+        updateProjection(); 
+        updateDailyMission();
+    });
     protocolosAnalisadosInput.addEventListener('input', () => { 
         localStorage.setItem('protocolosAnalisadosCount', protocolosAnalisadosInput.value);
         checkAchievements();
         updateProtocolProgress();
+        updateDailyMission();
     });
     dailyCancellationsInput.addEventListener('input', () => {
         const newDailyValue = parseInt(dailyCancellationsInput.value) || 0;
@@ -1547,6 +1752,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCategorySummary();
         renderCategoryPieChart();
     });
+    logbookTextarea.addEventListener('input', saveLogbook);
 
     incrementProtocolosButton.addEventListener('click', () => {
         vibrate();
@@ -1559,58 +1765,82 @@ document.addEventListener('DOMContentLoaded', () => {
         const target = e.target;
         const caseEntry = target.closest('.case-entry');
         if (!caseEntry) return;
-        const index = parseInt(caseEntry.dataset.index);
-        const caseItem = cases[index];
-        if (target.classList.contains('expand-btn')) {
+
+        const expandButton = target.closest('.expand-btn');
+        if (expandButton) {
             const details = caseEntry.querySelector('.case-details-content');
-            const isVisible = details.classList.toggle('visible');
-            target.textContent = isVisible ? '−' : '+';
+            details.classList.toggle('visible');
+            expandButton.classList.toggle('expanded');
+            return; 
         }
-        if (target.classList.contains('copy-protocol-btn')) copyToClipboard(caseEntry.querySelector('.protocol-input').value, 'Protocolo copiado!');
-        if (target.classList.contains('copy-phone-btn')) copyToClipboard(caseEntry.querySelector('.phone-input').value, 'Telefone copiado!');
-        if (target.classList.contains('copy-case-all-btn')) copyToClipboard(`Status: ${caseItem.status}\nProtocolo: ${caseItem.protocol || 'N/A'}\nTelefone: ${caseItem.phone || 'N/A'}\nDescrição: ${caseItem.description || 'N/A'}`, 'Dados do caso copiados!');
-        if (target.classList.contains('remove-case-btn')) { cases.splice(index, 1); saveCases(); renderCases(); vibrate(); }
+
+        const caseId = caseEntry.dataset.id;
+        const caseItem = allCases.find(c => c.id === caseId);
+
+        if (!caseItem) return;
+
+        if (target.closest('.copy-protocol-btn')) copyToClipboard(caseEntry.querySelector('.protocol-input').value, 'Protocolo copiado!');
+        if (target.closest('.copy-phone-btn')) copyToClipboard(caseEntry.querySelector('.phone-input').value, 'Telefone copiado!');
+        if (target.closest('.copy-case-all-btn')) copyToClipboard(`Status: ${caseItem.status}\nProtocolo: ${caseItem.protocol || 'N/A'}\nTelefone: ${caseItem.phone || 'N/A'}\nDescrição: ${caseItem.description || 'N/A'}`, 'Dados do caso copiados!');
+        if (target.closest('.remove-case-btn')) { 
+            if (confirm('Tem a certeza de que quer excluir este caso?')) {
+                allCases = allCases.filter(c => c.id !== caseId);
+                saveCases();
+                renderCases(document.querySelector('.filter-btn.active').dataset.filter, caseSearchInput.value);
+                vibrate();
+            }
+        }
     });
 
     casesListContainer.addEventListener('input', (e) => {
         const target = e.target;
         const caseEntry = target.closest('.case-entry');
         if (!caseEntry) return;
-        const index = parseInt(caseEntry.dataset.index);
-        if (target.classList.contains('protocol-input')) cases[index].protocol = target.value;
-        if (target.classList.contains('phone-input')) cases[index].phone = target.value;
-        if (target.classList.contains('description-input')) cases[index].description = target.value;
+        const caseId = caseEntry.dataset.id;
+        const caseIndex = allCases.findIndex(c => c.id === caseId);
+
+        if (caseIndex === -1) return;
+
+        if (target.classList.contains('protocol-input')) allCases[caseIndex].protocol = target.value;
+        if (target.classList.contains('phone-input')) allCases[caseIndex].phone = target.value;
+        if (target.classList.contains('description-input')) allCases[caseIndex].description = target.value;
         if (target.classList.contains('status-select')) {
-             cases[index].status = target.value;
+             allCases[caseIndex].status = target.value;
              usedStatuses.add(target.value);
              localStorage.setItem('usedStatuses', JSON.stringify(Array.from(usedStatuses)));
-             renderCases();
+             renderCases(document.querySelector('.filter-btn.active').dataset.filter, caseSearchInput.value);
         }
         saveCases();
     });
     
     addCaseButton.addEventListener('click', () => {
-        cases.unshift({ protocol: '', phone: '', description: '', status: 'Pendente' });
+        const newCase = { 
+            id: `case_${new Date().getTime()}`,
+            protocol: '', 
+            phone: '', 
+            description: '', 
+            status: 'Pendente',
+            date: getTodayDateString()
+        };
+        allCases.unshift(newCase);
         unlockAchievement('achieve-first-case', 'Primeiro caso adicionado!');
         saveCases();
         renderCases();
+        updateDailyMission();
         vibrate();
     });
-    clearAllCasesButton.addEventListener('click', () => {
-        if (cases.length === 0) { showToast('A lista de casos já está vazia.', 'info'); return; }
-        if (confirm('Tem a certeza que deseja limpar TODOS os casos da lista?')) { 
-            cases = []; 
-            saveCases(); 
-            renderCases(); 
-            showToast('Lista de casos limpa!', 'danger'); 
-            unlockAchievement('achieve-clear-cases', 'Tudo limpo!');
-            vibrate(); 
-        }
+
+    caseSearchInput.addEventListener('input', () => {
+        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+        renderCases(activeFilter, caseSearchInput.value);
     });
-    copyAllCasesButton.addEventListener('click', () => {
-        if (cases.length === 0) { showToast('Não há casos para copiar.', 'info'); return; }
-        const summary = cases.map((c,i) => `${i+1}. Status: ${c.status} | Protocolo: ${c.protocol || 'N/A'} | Telefone: ${c.phone || 'N/A'}\n   Descrição: ${c.description || 'Nenhuma'}`).join('\n------------------------------------\n');
-        copyToClipboard(summary, 'Resumo de todos os casos copiado!');
+
+    caseFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            caseFilterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            renderCases(button.dataset.filter, caseSearchInput.value);
+        });
     });
 
     saveButton.addEventListener('click', () => { vibrate(); saveData(); });
@@ -1651,10 +1881,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentFullText = target.dataset.fullText;
             
             const newSummary = prompt("Edite o resumo visível (máx. 2 linhas):", currentSummary);
-            if (newSummary === null) return; // Utilizador cancelou o primeiro prompt
+            if (newSummary === null) return; 
 
             const newFullText = prompt("Edite o texto completo a ser copiado:", currentFullText);
-            if (newFullText === null) return; // Utilizador cancelou o segundo prompt
+            if (newFullText === null) return; 
 
             target.innerText = newSummary;
             target.dataset.fullText = newFullText;
@@ -1663,6 +1893,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             const fullText = target.dataset.fullText || target.innerText;
             copyToClipboard(fullText, 'Resposta copiada!');
+            dailyCopyCount++;
+            localStorage.setItem('dailyCopyCount', dailyCopyCount);
+            updateDailyMission();
             unlockAchievement('achieve-copy-response', 'Resposta rápida copiada!');
             usedQuickResponses.add(target.id);
             localStorage.setItem('usedQuickResponses', JSON.stringify(Array.from(usedQuickResponses)));
@@ -1721,7 +1954,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 installAppButton.style.display = 'none';
             }
             deferredInstallPrompt = null; 
-        } else { showToast('A app já foi instalada ou não pode ser instalada neste navegador.', 'info'); }
+        } else { 
+            showToast('App já instalado. Para reinstalar, limpe os dados do site no navegador.', 'info');
+        }
+    });
+
+    clearCacheButton.addEventListener('click', () => {
+        if ('caches' in window && 'serviceWorker' in navigator) {
+            caches.keys().then(function(cacheNames) {
+                return Promise.all(
+                    cacheNames.map(function(cacheName) {
+                        return caches.delete(cacheName);
+                    })
+                );
+            }).then(() => {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                    showToast('Cache limpo! A página será recarregada.', 'success');
+                    setTimeout(() => window.location.reload(true), 2000);
+                });
+            });
+        } else {
+            showToast('Recurso não suportado neste navegador.', 'danger');
+        }
     });
 
     themeToggleButton.addEventListener('click', () => {
@@ -1735,6 +1992,27 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast(`Tema alterado para ${newTheme}!`, 'info');
         unlockAchievement('achieve-change-theme', 'Novo visual!');
     });
+    
+    tabsContainer.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'BUTTON') return;
+
+        const tabId = e.target.dataset.tab;
+
+        tabButtons.forEach(button => button.classList.remove('active'));
+        e.target.classList.add('active');
+
+        tabContents.forEach(content => {
+            if (content.id === `tab-${tabId}`) {
+                content.classList.add('active');
+            } else {
+                content.classList.remove('active');
+            }
+        });
+
+        // Re-render charts when their tab is shown
+        renderTrendChart();
+        renderCategoryPieChart();
+    });
 
 
     // --- INICIALIZAÇÃO ---
@@ -1747,3 +2025,4 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
