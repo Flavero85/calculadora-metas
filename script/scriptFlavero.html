@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scripts de Atendimento N2</title>
+    <link rel="icon" href="img/favicon-index.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #00bfa5; 
+            --primary-color-hover: #00a794;
+            --secondary-button-bg: rgba(255, 255, 255, 0.1);
+            --danger-color: #e73444;
+            --danger-color-hover: #d32f2f;
+            --text-color: #ffffff;
+            --text-secondary-color: #b0bec5; 
+            --border-color: rgba(255, 255, 255, 0.2);
+            --info-color: #29b6f6; 
+            --info-background: rgba(41, 182, 246, 0.1);
+            --success-color: #66bb6a; 
+            --success-background: rgba(102, 187, 106, 0.15);
+            --warning-color: #ffa726; 
+            --gold-color: #FFD700;
+            --main-bg: linear-gradient(to right, #00261e, #004d40);
+            --card-bg: linear-gradient(to bottom right, #1a237e, #283593);
+            --card-border: #3f51b5;
+            --input-bg: rgba(0, 0, 0, 0.2);
+        }
+
+        body.theme-light {
+            --text-color: #202124;
+            --text-secondary-color: #5f6368;
+            --border-color: #dadce0;
+            --main-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --input-bg: #f1f3f4;
+            --secondary-button-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        body.theme-mint {
+            --primary-color: #30a080;
+            --main-bg: linear-gradient(to top, #f0fdf4, #dcfce7);
+            --card-bg: #ffffff;
+            --text-color: #14532d;
+            --text-secondary-color: #4d7c0f;
+            --border-color: #d1fae5;
+        }
+
+        body.theme-sunset {
+            --primary-color: #f97316;
+            --main-bg: linear-gradient(135deg, #7f1d1d, #f97316);
+            --card-bg: linear-gradient(to bottom right, #1f2937, #374151);
+            --text-color: #f9fafb;
+            --text-secondary-color: #d1d5db;
+            --border-color: #4b5563;
+        }
+
+        body.theme-graphite {
+            --primary-color: #52525b;
+            --main-bg: #18181b;
+            --card-bg: #27272a;
+            --text-color: #f4f4f5;
+            --text-secondary-color: #a1a1aa;
+            --border-color: #3f3f46;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 10px auto;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        body.theme-light .page-container,
+        body.theme-mint .page-container {
+             background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            background-color: var(--secondary-button-bg);
+            color: var(--text-color);
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .button:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .tools-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #global-search {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            min-width: 200px;
+        }
+
+        #theme-toggle {
+            background: var(--secondary-button-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        h5 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .script-line, .link-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        
+        body.theme-light .script-line, body.theme-mint .script-line {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .script-line:hover, .link-item:hover {
+            transform: scale(1.02);
+            background-color: var(--info-background);
+        }
+
+        .script-line span {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .favorite-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .favorite-toggle:hover {
+            transform: scale(1.2);
+        }
+
+        .favorite-toggle.favorited {
+            color: var(--gold-color);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+        <header class="header-container">
+            <nav class="tab">
+                <a href="lentidao.html" class="button">Lentidão ⚠️</a>
+                <a href="massivotvbox.html" class="button">Massivo/TV Box📺</a>
+                <a href="metas.html" class="button">Metas📊</a>
+            </nav>
+            <div class="tools-container">
+                <input type="search" id="global-search" placeholder="Buscar em todos os scripts...">
+            </div>
+        </header>
+    
+        <main id="scripts-container">
+    
+            <section id="favorites-section" class="hidden">
+                <h5>⭐ Favoritos</h5>
+                <div id="favorites-container"></div>
+            </section>
+    
+            <section>
+                <h5>Abertura</h5>
+                <div id="mensagem-inicial" class="script-line"><span></span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Me confirme o nome completo do(a) titular e o CPF (ou CNPJ), por gentileza. 🔐✍️">
+                    <span>Me confirme o nome completo do(a) titular e o CPF (ou CNPJ), por gentileza. 🔐✍️</span>
+                    <button class="favorite-toggle">☆</button>
+                </div>
+            </section>
+    
+            <section>
+                <h5>Continuação</h5>
+                <div class="script-line" data-original="Gostaria de continuar o atendimento?"><span>Gostaria de continuar o atendimento?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Certo. Só mais um minuto por gentileza que vou verificar."><span>Certo. Só mais um minuto por gentileza que vou verificar.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Certo, como posso ajudar?"><span>Certo, como posso ajudar?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Posso ajudar em algo mais?"><span>Posso ajudar em algo mais?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Entendi, vou verificar no sistema o que está acontecendo, só um momento."><span>Entendi, vou verificar no sistema o que está acontecendo, só um momento.</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Finalização</h5>
+                <div id="mensagem-final" class="script-line"><span></span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Por falta de comunicação, este atendimento foi encerrado. Continuamos à sua disposição por este canal ou através do telefone 103 44."><span>Por falta de comunicação, este atendimento foi encerrado...</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Protocolo</h5>
+                <div class="script-line" data-original="Cliente entra em contato informando que está sem sinal de internet // Procedimentos feitos // Necessário visita técnica // Ponto de referência: // Telefone para contato: ."><span>Protocolo: Sem sinal, VT necessária...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Ponto de referência:&#10;Tel:&#10;Tel²:&#10;Data agendada:&#10;Período Agendado:&#10;Aceita antecipar a visita se possível? [ ] Sim - [ ] Não.&#10;Período de disponibilidade: [ ] Manhã - [ ] Tarde - [ ] Noite - [ ] Todos."><span>Dados para agendamento VT...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Preciso confirmar algumas preferências, tudo bem?&#10;&#10;🏘 Ponto de referencia:&#10;📞 Telefone de contato:&#10;📞 Telefone de contato secundário:&#10;🔨 Aceita antecipar a visita se possível?:&#10;📋 Período de disponibilidade:&#10;."><span>Confirmar preferências de agendamento...</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Visitas Técnicas</h5>
+                <div class="script-line" data-original="Posso estar pedindo para a supervisão um pedido de encaixe para hoje ainda, porém não é 100% garantido, ok?"><span>Posso solicitar um encaixe para hoje (sem garantia).</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Prontinho, foi solicitado o encaixe para a supervisão e só estou esperando ela dar o Ok para ter certeza que foi para a equipe técnica, ok?"><span>Encaixe solicitado, aguardando OK da supervisão.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Já recebi o ok da supervisão e vão tentar ao máximo um encaixe para hoje ainda, ok?"><span>Supervisão aprovou, tentarão encaixe para hoje.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Peço desculpas pelo transtorno. Verifiquei em sistema e consta reagendamento para amanhã, das 07:00 às 13:00. Houve uma tentativa de remanejamento para hoje, porém sem êxito. Caso queira, posso solicitar outra tentativa."><span>Reagendado para amanhã, tentativa de hoje sem êxito...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Certo, nesse caso o protocolo ainda está em aberto. Pode ser que o técnico esteja a caminho da sua residência. Infelizmente não temos contato direto com os técnicos na rua, peço que aguarde mais um pouco."><span>Protocolo em aberto, técnico a caminho...</span><button class="favorite-toggle">☆</button></div>
+            </section>
+            
+            <section>
+                <h5>Avisos</h5>
+                <div class="script-line" data-original="No momento não consigo ouvir seu áudio. Poderia digitar para otimizar nosso atendimento?"><span>Não consigo ouvir seu áudio, por favor, digite.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Preciso me ausentar por 10 minutos para uma atualização do meu sistema 💻. Peço que, por favor, aguarde. Retornarei aqui nesse mesmo canal para dar continuidade. 👍"><span>Preciso me ausentar por 10 min (atualização). Já volto.</span><button class="favorite-toggle">☆</button></div>
+            </section>
+            
+            <section>
+                <h5>CPF</h5>
+                <div class="script-line" data-original="Não localizei o seu cadastro no sistema. Consegue me informar se o seu plano é de alguma adquirida? Como Starnet, C-lig, Netell ou Netion?"><span>Não localizei o cadastro. Seu plano é de alguma adquirida?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Estou vendo que há dois cadastros nesse CPF. Poderia me informar de qual endereço você deseja falar? 📍"><span>Dois cadastros no CPF, qual o endereço do atendimento?</span><button class="favorite-toggle">☆</button></div>
+            </section>
+            
+            <section>
+                <h5>Cancelamento</h5>
+                <div class="script-line" data-original="Entendi, qual seria o motivo do cancelamento?"><span>Qual o motivo do cancelamento?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Cliente deseja cancelamento do plano // ofertado desconto e VT // cliente recusa // motivo: mudança."><span>Protocolo: Cliente recusa oferta, motivo mudança.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="O setor de cancelamento está fora de expediente. O horário de funcionamento é de segunda à sexta, das 08h às 20h, and de sábado, das 08h às 18h."><span>Setor de cancelamento fora de expediente.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Por motivos de procedimento, preciso perguntar: teria interesse na mudança de titularidade ou posso ofertar algum desconto no seu plano?"><span>Posso ofertar mudança de titularidade ou desconto?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Aguarde um momento por gentileza, enquanto realizo sua transferência para o departamento responsável! A Desktop agradece seu contato."><span>Aguarde um momento, estou realizando sua transferência...</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+        </main>
+    </div>
+
+</body>
+</html>

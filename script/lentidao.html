@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentidão ou Sem Conexão</title>
+    <link rel="icon" href="img/favicon-index.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #00bfa5; 
+            --primary-color-hover: #00a794;
+            --secondary-button-bg: rgba(255, 255, 255, 0.1);
+            --danger-color: #e73444;
+            --danger-color-hover: #d32f2f;
+            --text-color: #ffffff;
+            --text-secondary-color: #b0bec5; 
+            --border-color: rgba(255, 255, 255, 0.2);
+            --info-color: #29b6f6; 
+            --info-background: rgba(41, 182, 246, 0.1);
+            --success-color: #66bb6a; 
+            --success-background: rgba(102, 187, 106, 0.15);
+            --warning-color: #ffa726; 
+            --gold-color: #FFD700;
+            --main-bg: linear-gradient(to right, #00261e, #004d40);
+            --card-bg: linear-gradient(to bottom right, #1a237e, #283593);
+            --card-border: #3f51b5;
+            --input-bg: rgba(0, 0, 0, 0.2);
+        }
+
+        body.theme-light {
+            --text-color: #202124;
+            --text-secondary-color: #5f6368;
+            --border-color: #dadce0;
+            --main-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --input-bg: #f1f3f4;
+            --secondary-button-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        body.theme-mint {
+            --primary-color: #30a080;
+            --main-bg: linear-gradient(to top, #f0fdf4, #dcfce7);
+            --card-bg: #ffffff;
+            --text-color: #14532d;
+            --text-secondary-color: #4d7c0f;
+            --border-color: #d1fae5;
+        }
+
+        body.theme-sunset {
+            --primary-color: #f97316;
+            --main-bg: linear-gradient(135deg, #7f1d1d, #f97316);
+            --card-bg: linear-gradient(to bottom right, #1f2937, #374151);
+            --text-color: #f9fafb;
+            --text-secondary-color: #d1d5db;
+            --border-color: #4b5563;
+        }
+
+        body.theme-graphite {
+            --primary-color: #52525b;
+            --main-bg: #18181b;
+            --card-bg: #27272a;
+            --text-color: #f4f4f5;
+            --text-secondary-color: #a1a1aa;
+            --border-color: #3f3f46;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 10px auto;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        body.theme-light .page-container,
+        body.theme-mint .page-container {
+             background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            background-color: var(--secondary-button-bg);
+            color: var(--text-color);
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .button:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        h5 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .script-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        body.theme-light .script-line, body.theme-mint .script-line {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .script-line:hover {
+            transform: scale(1.02);
+            background-color: var(--info-background);
+        }
+
+        .script-line span {
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .favorite-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .favorite-toggle:hover {
+            transform: scale(1.2);
+        }
+
+        .favorite-toggle.favorited {
+            color: var(--gold-color);
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            box-sizing: border-box;
+        }
+
+        .time-selection-container {
+            display: flex;
+            gap: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header-container">
+            <nav class="tab">
+                <a href="scriptFlavero.html" class="button">Home 🏠</a>
+                <a href="massivotvbox.html" class="button">Massivo/TV Box📺</a>
+                <a href="index.html" class="button"> Metas 📊</a>
+            </nav>
+        </header>
+    
+        <main class="content-container">
+            <section>
+                <h5>Lentidão ou Sem Conexão</h5>
+                <div class="script-line" data-original="Vou precisar realizar alguns procedimentos para tentar normalizar a sua conexão, 📶 tudo bem?"><span>Vou precisar realizar alguns procedimentos...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Por gentileza, poderia desligar o roteador da tomada? 🔌 para realizar alguns ajustes por aqui."><span>Poderia desligar o roteador da tomada? 🔌</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Por favor, me avise assim que o roteador estiver desligado. ❌"><span>Me avise assim que o roteador estiver desligado. ❌</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Depois de 2 minutos pode ligar novamente."><span>Depois de 2 minutos pode ligar novamente.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Pode ligar novamente o aparelho 👍"><span>Pode ligar novamente o aparelho 👍</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Agora é só aguardar a reinicialização do equipamento, que leva de 3 a 5 minutos, para testarmos se a conexão foi normalizada. ⏳ e realizo o último procedimento."><span>Aguarde a reinicialização (3 a 5 min)... ⏳</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Confirmar se Conexão Normalizou</h5>
+                <div class="script-line" data-original="Por favor, me avise se a conexão foi restabelecida para que possamos continuar, tudo certo agora? 👍"><span>A conexão foi restabelecida, tudo certo? 👍</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Que bom que normalizou, posso ajudar em algo mais?"><span>Que bom que normalizou, posso ajudar em algo mais?</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Agendar Visita Técnica</h5>
+                <div class="script-line" data-original="Poxa... 😢 Nesse caso, vou agendar uma visita técnica 🔧 para que o seu acesso seja normalizado, Ok?"><span>Poxa... 😢 Vou agendar uma visita técnica 🔧</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Por gentileza, preciso de *um número de contato 📞 *e um ponto de referência para seguirmos com o agendamento. 📅"><span>Preciso de um contato 📞 e ponto de referência 📅</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Agora só preciso confirmar a data do agendamento técnico com você. Um minuto enquanto verifico a disponibilidade na agenda."><span>Vou verificar a disponibilidade na agenda...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Tem algum ponto de referência?"><span>Tem algum ponto de referência?</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Protocolo</h5>
+                <div class="script-line" data-original="Cliente entra em contato informando que está sem sinal de internet // Procedimentos feitos // Necessário visita técnica // Ponto de referência: // Telefone para contato: ."><span>Protocolo: Sem sinal, VT necessária...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Ponto de referência:&#10;Tel:&#10;Tel²:&#10;Data agendada:&#10;Período Agendado:&#10;Aceita antecipar a visita se possível? [ ] Sim - [ ] Não.&#10;Período de disponibilidade: [ ] Manhã - [ ] Tarde - [ ] Noite - [ ] Todos."><span>Dados para agendamento VT...</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Cliente entra em contato informando que está com lentidão // teste feito e anexo em notas // Procedimentos feitos // Necessário visita técnica  // Telefone para contato: "><span>Protocolo: Lentidão, VT neces...</span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+            <section>
+                <h5>Confirmar Informações para Agendamento</h5>
+                <div class="form-group">
+                    <label for="data-agendamento">Data:</label>
+                    <input type="date" id="data-agendamento">
+                </div>
+    
+                <div class="time-selection-container">
+                    <div class="form-group">
+                        <label for="hora-inicio">Período de:</label>
+                        <select id="hora-inicio">
+                            <option value="07:00">07:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="19:00">19:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="hora-fim">Até:</label>
+                        <select id="hora-fim">
+                            <option value="13:00">13:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="22:00">22:00</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <br>
+                
+                <div id="confirmar-agendamento" class="script-line" data-original="" style="display: block; text-align: center;">
+                    <span>Verifiquei em sistema e tenho disponível para --/-- no período das --:-- às --:--. Posso agendar? 👍</span>
+                    <button class="favorite-toggle">☆</button>
+                </div>
+                <div id="finalizar-agendamento" class="script-line" data-original="" style="display: block; text-align: center; margin-top: 10px;">
+                    <span>Prontinho! O agendamento foi realizado para --/--...</span>
+                    <button class="favorite-toggle">☆</button>
+                </div>
+                
+                <div class="script-line" data-original="E das 13:00 às 19:00hrs."><span>E das 13:00 às 19:00hrs.</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="E das 19:00 às 22:00hrs."><span>E das 19:00 às 22:00hrs.</span><button class="favorite-toggle">☆</button></div>
+            </section>
+            
+            <section>
+                <h5>Finalização do Atendimento</h5>
+                <div class="script-line" data-original="Posso ajudar em algo mais?"><span>Posso ajudar em algo mais?</span><button class="favorite-toggle">☆</button></div>
+                <div class="script-line" data-original="Por falta de comunicação, este atendimento foi encerrado, continuamos à sua disposição por esse canal, ou através do telefone 3514-3100"><span>Por falta de comunicação, este atendimento foi encerrado...</span><button class="favorite-toggle">☆</button></div>
+                <div id="mensagem-final" class="script-line" style="display: block; text-align: center;"><span></span><button class="favorite-toggle">☆</button></div>
+            </section>
+    
+        </main>
+    </div>
+</body>
+</html>

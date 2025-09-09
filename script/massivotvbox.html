@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Massivo, TV Box e Mudança</title>
+    <link rel="icon" href="img/favicon-index.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary-color: #00bfa5; 
+            --primary-color-hover: #00a794;
+            --secondary-button-bg: rgba(255, 255, 255, 0.1);
+            --danger-color: #e73444;
+            --danger-color-hover: #d32f2f;
+            --text-color: #ffffff;
+            --text-secondary-color: #b0bec5; 
+            --border-color: rgba(255, 255, 255, 0.2);
+            --info-color: #29b6f6; 
+            --info-background: rgba(41, 182, 246, 0.1);
+            --success-color: #66bb6a; 
+            --success-background: rgba(102, 187, 106, 0.15);
+            --warning-color: #ffa726; 
+            --gold-color: #FFD700;
+            --main-bg: linear-gradient(to right, #00261e, #004d40);
+            --card-bg: linear-gradient(to bottom right, #1a237e, #283593);
+            --card-border: #3f51b5;
+            --input-bg: rgba(0, 0, 0, 0.2);
+        }
+
+        body.theme-light {
+            --text-color: #202124;
+            --text-secondary-color: #5f6368;
+            --border-color: #dadce0;
+            --main-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --input-bg: #f1f3f4;
+            --secondary-button-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        body.theme-mint {
+            --primary-color: #30a080;
+            --main-bg: linear-gradient(to top, #f0fdf4, #dcfce7);
+            --card-bg: #ffffff;
+            --text-color: #14532d;
+            --text-secondary-color: #4d7c0f;
+            --border-color: #d1fae5;
+        }
+
+        body.theme-sunset {
+            --primary-color: #f97316;
+            --main-bg: linear-gradient(135deg, #7f1d1d, #f97316);
+            --card-bg: linear-gradient(to bottom right, #1f2937, #374151);
+            --text-color: #f9fafb;
+            --text-secondary-color: #d1d5db;
+            --border-color: #4b5563;
+        }
+
+        body.theme-graphite {
+            --primary-color: #52525b;
+            --main-bg: #18181b;
+            --card-bg: #27272a;
+            --text-color: #f4f4f5;
+            --text-secondary-color: #a1a1aa;
+            --border-color: #3f3f46;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 10px auto;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        body.theme-light .page-container,
+        body.theme-mint .page-container {
+             background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            background-color: var(--secondary-button-bg);
+            color: var(--text-color);
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .button:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        h5 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .script-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            text-align: left;
+        }
+
+        body.theme-light .script-line, body.theme-mint .script-line {
+            background-color: rgba(0,0,0,0.05);
+        }
+
+        .script-line:hover {
+            transform: scale(1.02);
+            background-color: var(--info-background);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <header class="header-container">
+            <nav class="tab">
+                <a href="scriptFlavero.html" class="button">Home 🏠</a>
+                <a href="lentidao.html" class="button">Lentidão ⚠️</a>
+                <a href="index.html" class="button">Metas 📊</a>
+            </nav>
+        </header>
+    
+        <main>
+            <section>
+                <h5>Massivo / TV Box / Mudança</h5>
+                <div class="script-line" data-original="Acabei de verificar e foi constatado um problema geral na sua região. Nossos técnicos já foram notificados e o prazo para a normalização é de 24 horas. Esse é o prazo máximo, mas pode ser que normalize antes!">
+                    MASSIVO - 24hrs
+                </div>
+                <div class="script-line" data-original="Abra Conexões de Rede pressionando Windows + R e digitando ncpa.cpl. Clique em OK. Em seguida, clique com o botão direito na Conexão Local e selecione Protocolo IP Versão 4 (TCP/IPv4), depois clique em Propriedades. Marque a opção Usar os seguintes endereços de servidor DNS e, nos campos de Servidor DNS preferencial e alternativo, digite os seguintes endereços: Primário: 201.77.112.48 Secundário: 201.77.112.">
+                    CONFIGURAÇÃO DNS
+                </div>
+                <div class="script-line" data-original="A velocidade da conexão em medições instantâneas deve estar dentro de 40% do plano contratado, conforme exige a Anatel. Essas informações ficam disponíveis no site da ANATEL: www.anatel.gov.br">
+                    40% ANATEL
+                </div>
+                <div class="script-line" data-original="Entendo. O bloqueio é específico para os aparelhos de TV BOX e não está diretamente relacionado com a Desktop. É uma determinação da ANATEL. Realizei os procedimentos necessários para tentar disponibilizar o acesso, mas infelizmente não foi possível. Como se trata de um bloqueio determinado pela ANATEL, não podemos prestar atendimento devido à falta de sinal em TV BOX, apenas problemas relacionados à internet Desktop.">
+                    TVBOX
+                </div>
+                <div class="script-line" data-original="Nesse caso, não podemos mais realizar o desbloqueio. Agora, somente com a autorização da supervisão com o envio do comprovante de pagamento.">
+                    Desbloqueio só com comprovante (Supervisão)
+                </div>
+                 <div class="script-line" data-original="Peço desculpas, mas não tem como mesmo, é nova regra da Desktop.">
+                    Nova regra da Desktop, sem exceções.
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

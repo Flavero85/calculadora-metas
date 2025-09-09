@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Metas N2</title>
+    <link rel="icon" href="img/favicon-index.ico" type="image/x-icon">
+    
+    <style>
+        /* --- VARIAVÉIS DE COR E GERAL --- */
+        :root {
+            --primary-color: #1877f2;
+            --primary-color-hover: #166fe5;
+            --secondary-button-bg: #e4e6eb;
+            --secondary-button-hover-bg: #dcdfe3;
+            --background-color: #f0f2f5;
+            --container-background: #ffffff;
+            --text-color: #1c1e21;
+            --text-secondary-color: #606770;
+            --border-color: #ddd;
+            --info-color: #1877f2;
+            --info-background: #e7f3ff;
+            --success-color: #31a24c;
+            --success-background: #e3f3e6;
+        }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+        }
+        /* --- ESTILOS DA PÁGINA DE METAS --- */
+        .page-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px 40px;
+            background-color: var(--container-background);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .header-metas {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .metas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .meta-card {
+            background-color: var(--container-background);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .card-header h2 {
+            margin: 0 0 5px 0;
+            color: var(--text-color);
+        }
+        .card-header p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--text-secondary-color);
+        }
+        .card-body {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+        }
+        .input-with-button-container {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .input-with-button-container input {
+            flex-grow: 1;
+        }
+        .button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: var(--primary-color-hover);
+        }
+        #incrementButton {
+            flex-shrink: 0;
+            width: 50px;
+            font-size: 1.2rem;
+            padding: 8px;
+        }
+        .meta-item {
+            margin-bottom: 15px;
+        }
+        .meta-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .meta-label {
+            font-weight: 500;
+        }
+        .meta-percentage {
+            font-weight: bold;
+            color: var(--text-secondary-color);
+        }
+        .progress-bar-background {
+            width: 100%;
+            height: 20px;
+            background-color: var(--secondary-button-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background-color: var(--info-color);
+            border-radius: 10px;
+            transition: width 0.5s ease-out, background-color 0.5s;
+        }
+        .progress-bar-fill.completed {
+            background-color: var(--success-color);
+        }
+        .summary-box {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--info-background);
+            border-left: 5px solid var(--info-color);
+            border-radius: 4px;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .summary-box.completed {
+            background-color: var(--success-background);
+            border-left-color: var(--success-color);
+        }
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border-color);
+            margin: 15px 0;
+        }
+        .faixas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .faixa-item {
+            background-color: var(--secondary-button-bg);
+            border: 1px solid var(--border-color);
+            padding: 6px 10px;
+            border-radius: 16px;
+            font-size: 12px;
+            color: var(--text-secondary-color);
+            transition: all 0.3s;
+        }
+        .faixa-item.achieved {
+            background-color: var(--success-background);
+            border-color: var(--success-color);
+            color: var(--text-color);
+            font-weight: bold;
+        }
+        .back-button {
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            background-color: var(--secondary-button-bg);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container" style="max-width: 800px;">
+        <div class="header-metas">
+            <h1>Painel de Metas 📊</h1>
+            <a href="scriptFlavero.html" class="back-button">‹ Voltar para a Home</a>
+        </div>
+        
+        <div class="metas-grid">
+            <!-- Card de Atendimentos -->
+            <div class="meta-card">
+                <div class="card-header">
+                    <h2>Atendimentos</h2>
+                    <p>Acompanhe seu progresso para o bônus.</p>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="atendimentosInput">Total de Atendimentos:</label>
+                        <div class="input-with-button-container">
+                            <input type="number" id="atendimentosInput" placeholder="Ex: 620">
+                            <button type="button" id="incrementButton" class="button">+1</button>
+                        </div>
+                    </div>
+                    <div id="metas-container">
+                        <!-- As barras de progresso serão geradas aqui -->
+                    </div>
+                    <div id="summary-text" class="summary-box">Aguardando seus dados...</div>
+                </div>
+            </div>
+
+            <!-- Card de Indicadores -->
+            <div class="meta-card">
+                <div class="card-header">
+                    <h2>Indicadores</h2>
+                    <p>Insira suas porcentagens de performance.</p>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="csatInput">CSAT (%):</label>
+                        <input type="number" id="csatInput" placeholder="Ex: 85" min="0" max="100">
+                    </div>
+                    <div class="faixas-container" id="csatFaixas">
+                        <!-- As faixas de CSAT serão geradas aqui -->
+                    </div>
+                    
+                    <hr class="section-divider">
+
+                    <div class="form-group">
+                        <label for="avaliadasInput">Avaliadas (%):</label>
+                        <input type="number" id="avaliadasInput" placeholder="Ex: 42" min="0">
+                    </div>
+                    <div class="faixas-container" id="avaliadasFaixas">
+                        <!-- As faixas de Avaliadas serão geradas aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const metasPageIdentifier = document.getElementById('atendimentosInput');
+            if (!metasPageIdentifier) return;
+
+            // --- LÓGICA DE ATENDIMENTOS ---
+            const atendimentosInput = document.getElementById('atendimentosInput');
+            const metas = [{ id: 1, target: 550, reward: 300 }, { id: 2, target: 750, reward: 400 }, { id: 3, target: 850, reward: 500 }, { id: 4, target: 950, reward: 700 }];
+            const metasContainer = document.getElementById('metas-container');
+            const summaryText = document.getElementById('summary-text');
+            const incrementButton = document.getElementById('incrementButton');
+
+            function renderAtendimentoMetas() {
+                if (!metasContainer) return;
+                metasContainer.innerHTML = '';
+                metas.forEach(meta => {
+                    const metaElement = document.createElement('div');
+                    metaElement.className = 'meta-item';
+                    metaElement.innerHTML = `<div class="meta-header"><span class="meta-label">Faixa ${meta.id}: ${meta.target} (R$ ${meta.reward})</span><span class="meta-percentage" id="meta${meta.id}-percent">0%</span></div><div class="progress-bar-background"><div class="progress-bar-fill" id="meta${meta.id}-fill"></div></div>`;
+                    metasContainer.appendChild(metaElement);
+                });
+            }
+
+            function updateAtendimentoProgress() {
+                if (!atendimentosInput || !summaryText) return;
+                const currentValue = parseInt(atendimentosInput.value) || 0;
+                localStorage.setItem('atendimentosCount', currentValue);
+                let highestAchieved = null;
+                metas.forEach(meta => {
+                    const percent = Math.min(100, (currentValue / meta.target) * 100);
+                    const fill = document.getElementById(`meta${meta.id}-fill`);
+                    const percentText = document.getElementById(`meta${meta.id}-percent`);
+                    if (fill && percentText) {
+                        fill.style.width = `${percent}%`;
+                        percentText.textContent = `${Math.floor(percent)}%`;
+                        if (percent >= 100) {
+                            fill.classList.add('completed');
+                            highestAchieved = meta;
+                        } else {
+                            fill.classList.remove('completed');
+                        }
+                    }
+                });
+                if (!highestAchieved) {
+                    const faltam = metas[0].target - currentValue;
+                    summaryText.innerHTML = `Faltam <strong>${faltam > 0 ? faltam : 0}</strong> atendimentos para a Faixa 1.`;
+                    summaryText.className = 'summary-box';
+                } else {
+                    const nextMetaIndex = metas.findIndex(m => m.id === highestAchieved.id) + 1;
+                    if (nextMetaIndex < metas.length) {
+                        const nextMeta = metas[nextMetaIndex];
+                        const faltam = nextMeta.target - currentValue;
+                        summaryText.innerHTML = `Parabéns! Atingido: <strong>Faixa ${highestAchieved.id} (R$ ${highestAchieved.reward})</strong>. Faltam <strong>${faltam > 0 ? faltam : 0}</strong> para a próxima!`;
+                        summaryText.className = 'summary-box completed';
+                    } else {
+                        summaryText.innerHTML = `INCRÍVEL! 🏆 Meta máxima de <strong>R$ ${highestAchieved.reward}</strong> atingida!`;
+                        summaryText.className = 'summary-box completed';
+                    }
+                }
+            }
+
+            // --- LÓGICA DE INDICADORES (CSAT E AVALIADAS) ---
+            function setupTierTracker(inputId, containerId, tiers, storageKey) {
+                const input = document.getElementById(inputId);
+                const container = document.getElementById(containerId);
+                if (!input || !container) return;
+                container.innerHTML = '';
+                tiers.forEach(tier => {
+                    const faixaEl = document.createElement('div');
+                    faixaEl.className = 'faixa-item';
+                    faixaEl.dataset.tierMin = tier.min;
+                    faixaEl.textContent = tier.label;
+                    container.appendChild(faixaEl);
+                });
+                const faixas = container.querySelectorAll('.faixa-item');
+                function update() {
+                    const value = parseFloat(input.value) || 0;
+                    localStorage.setItem(storageKey, value);
+                    let achievedTierMin = -1;
+                    tiers.forEach(tier => {
+                        if (value >= tier.min && value <= tier.max) {
+                            achievedTierMin = tier.min;
+                        }
+                    });
+                    faixas.forEach(faixa => {
+                        faixa.classList.toggle('achieved', parseInt(faixa.dataset.tierMin) === achievedTierMin);
+                    });
+                }
+                const savedValue = localStorage.getItem(storageKey);
+                if (savedValue) { input.value = savedValue; }
+                update();
+                input.addEventListener('input', update);
+            }
+
+            const csatTiers = [{ label: 'F1 0% (60-69%)', min: 60, max: 69.9 }, { label: 'F2 10%(70-79%)', min: 70, max: 79.9 }, { label: 'F3 20%(80-89%)', min: 80, max: 89.9 }, { label: 'F4 30%(90-100%)', min: 90, max: 100 }];
+            setupTierTracker('csatInput', 'csatFaixas', csatTiers, 'csatValue');
+
+            const avaliadasTiers = [{ label: 'F1 0% (21-29%)', min: 21, max: 29.9 }, { label: 'F2 5%(30-39%)', min: 30, max: 39.9 }, { label: 'F3 10%(40-49%)', min: 40, max: 49.9 }, { label: 'F4 15%(+50%)', min: 50, max: Infinity }];
+            setupTierTracker('avaliadasInput', 'avaliadasFaixas', avaliadasTiers, 'avaliadasValue');
+
+            // --- INICIALIZAÇÃO E EVENTOS ---
+            renderAtendimentoMetas();
+            const savedAtendimentos = localStorage.getItem('atendimentosCount');
+            if (savedAtendimentos) { atendimentosInput.value = savedAtendimentos; }
+            updateAtendimentoProgress();
+            atendimentosInput.addEventListener('input', updateAtendimentoProgress);
+            if (incrementButton) {
+                incrementButton.addEventListener('click', () => {
+                    atendimentosInput.value = (parseInt(atendimentosInput.value) || 0) + 1;
+                    atendimentosInput.dispatchEvent(new Event('input'));
+                });
+            }
+        });
+    </script>
+</body>
+</html>

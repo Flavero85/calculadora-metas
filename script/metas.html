@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte N2</title>
+    <meta name="theme-color" content="#004d40"/>
+    <meta name="description" content="Aplicativo de acompanhamento de metas para Suporte N2."/>
+    <link rel="apple-touch-icon" href="icons/logo.png">
+    <link rel="manifest" href="manifest.json">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #00bfa5; 
+            --primary-color-hover: #00a794;
+            --secondary-button-bg: rgba(255, 255, 255, 0.1);
+            --danger-color: #e73444;
+            --danger-color-hover: #d32f2f;
+            --text-color: #ffffff;
+            --text-secondary-color: #b0bec5; 
+            --border-color: rgba(255, 255, 255, 0.2);
+            --info-color: #29b6f6; 
+            --info-background: rgba(41, 182, 246, 0.1);
+            --success-color: #66bb6a; 
+            --success-background: rgba(102, 187, 106, 0.15);
+            --warning-color: #ffa726; 
+            --gold-color: #FFD700;
+            --main-bg: linear-gradient(to right, #00261e, #004d40);
+            --card-bg: linear-gradient(to bottom right, #1a237e, #283593);
+            --card-border: #3f51b5;
+            --input-bg: rgba(0, 0, 0, 0.2);
+            --toast-bg: #333;
+        }
+
+        /* TEMA CLARO (LIGHT) */
+        body.theme-light {
+            --text-color: #202124;
+            --text-secondary-color: #5f6368;
+            --border-color: #dadce0;
+            --main-bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --card-border: #e0e0e0;
+            --input-bg: #f1f3f4;
+            --secondary-button-bg: rgba(0, 0, 0, 0.05);
+            --toast-bg: #ffffff;
+            --toast-color: #202124;
+        }
+        
+        /* TEMA VERDE MENTA */
+        body.theme-mint {
+            --primary-color: #30a080;
+            --primary-color-hover: #298a6f;
+            --main-bg: linear-gradient(to top, #f0fdf4, #dcfce7);
+            --card-bg: #ffffff;
+            --card-border: #bbf7d0;
+            --text-color: #14532d;
+            --text-secondary-color: #4d7c0f;
+            --input-bg: #f0fdf4;
+            --border-color: #d1fae5;
+            --info-color: #0ea5e9;
+            --info-background: #e0f2fe;
+            --success-color: #22c55e;
+            --success-background: #dcfce7;
+        }
+
+        /* TEMA PÔR DO SOL */
+        body.theme-sunset {
+            --primary-color: #f97316;
+            --primary-color-hover: #ea580c;
+            --main-bg: linear-gradient(135deg, #7f1d1d, #b91c1c, #f97316);
+            --card-bg: linear-gradient(to bottom right, #1f2937, #374151);
+            --card-border: #4b5563;
+            --text-color: #f9fafb;
+            --text-secondary-color: #d1d5db;
+            --input-bg: rgba(17, 24, 39, 0.5);
+            --border-color: #4b5563;
+            --info-color: #facc15;
+            --info-background: rgba(250, 204, 21, 0.1);
+        }
+
+        /* TEMA GRAFITE */
+        body.theme-graphite {
+            --primary-color: #52525b;
+            --primary-color-hover: #71717a;
+            --main-bg: #18181b;
+            --card-bg: #27272a;
+            --card-border: #3f3f46;
+            --text-color: #f4f4f5;
+            --text-secondary-color: #a1a1aa;
+            --input-bg: #3f3f46;
+            --border-color: #3f3f46;
+            --info-color: #a78bfa;
+            --info-background: rgba(167, 139, 250, 0.1);
+            --success-color: #4ade80;
+            --success-background: rgba(74, 222, 128, 0.1);
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: var(--main-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
+            padding-bottom: 70px;
+            transition: background 0.5s, color 0.5s;
+        }
+        .page-container {
+            max-width: 1200px;
+            margin: 10px auto;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        body.theme-light .page-container,
+        body.theme-mint .page-container {
+             background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-metas {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .header-logo {
+            height: 32px;
+            width: auto;
+            margin-right: 10px;
+        }
+        .header-metas h1 { 
+            margin: 0; 
+            color: var(--text-color); 
+            font-size: 1.6rem;
+        }
+        .metas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 15px;
+        }
+        .meta-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 0 12px rgba(63, 81, 181, 0.4);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            overflow: hidden;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .card-header { padding: 15px; border-bottom: 1px solid var(--border-color); }
+        .card-header h2 { margin: 0 0 5px 0; color: var(--text-color); }
+        .card-header p { margin: 0; font-size: 14px; color: var(--text-secondary-color); }
+        .card-body { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; gap: 12px; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; font-weight: 500; color: var(--text-secondary-color); }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; box-sizing: border-box; font-size: 14px; border-radius: 6px; background-color: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-color); }
+        #atendimentosInput, #dailyCancellationsInput, #protocolosAnalisadosInput { font-size: 2.2rem; font-weight: bold; text-align: center; color: var(--text-color); background-color: rgba(0, 0, 0, 0.1); border: 2px solid var(--border-color); }
+        #atendimentosInput:focus, #dailyCancellationsInput:focus, #protocolosAnalisadosInput:focus { outline: none; border-color: var(--primary-color); }
+        .input-with-button-container { display: flex; gap: 8px; align-items: stretch; }
+        .input-with-button-container input { flex-grow: 1; }
+        .button { background-color: var(--primary-color); color: white; padding: 10px 15px; border: none; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: bold; cursor: pointer; transition: background-color 0.2s; }
+        body.theme-mint .button { color: #f0fdf4; }
+        .button:hover { background-color: var(--primary-color-hover); }
+        .button.save-button { background-color: var(--success-color); }
+        .button.save-button:hover { background-color: #55a058; }
+        .button.reset-button { background-color: var(--danger-color); }
+        .button.reset-button:hover { background-color: var(--danger-color-hover); }
+        .button.secondary-button { background-color: var(--secondary-button-bg); color: var(--text-color); }
+        .button.secondary-button:hover { background-color: rgba(0, 0, 0, 0.1); }
+        body.light-theme .button.secondary-button:hover,
+        body.theme-mint .button.secondary-button:hover { background-color: rgba(0, 0, 0, 0.1); }
+        
+        .daily-counters-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+        .daily-counters-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        #settings-button {
+            background: none;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            color: var(--text-secondary-color);
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #settings-button svg {
+            transition: transform 0.3s ease-in-out;
+        }
+        #settings-button:hover svg {
+            transform: rotate(90deg);
+            color: var(--primary-color);
+        }
+
+        .meta-item { margin-bottom: 15px; }
+        .progress-bar-background { width: 100%; height: 12px; background-color: rgba(0, 0, 0, 0.2); border-radius: 10px; overflow: hidden; border: 1px solid var(--border-color); }
+        .progress-bar-fill { height: 100%; width: 0%; background-color: var(--info-color); border-radius: 10px; transition: width 0.5s ease-out, background-color 0.5s; }
+        .progress-bar-fill.completed { background-color: var(--success-color); }
+        .summary-box { padding: 15px; background-color: var(--info-background); border-left: 5px solid var(--info-color); border-radius: 4px; font-weight: bold; text-align: center; transition: all 0.3s; color: var(--text-color); }
+        .summary-box.completed { background-color: var(--success-background); border-left-color: var(--success-color); }
+        .indicators-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .bonus-value, .projection-value { font-size: 2.5rem; font-weight: bold; }
+        #history-list, #category-summary-list, #achievement-list { list-style: none; padding: 0; margin: 0; max-height: 250px; overflow-y: auto; }
+        #history-list li, #category-summary-list li, #achievement-list li { background-color: rgba(0,0,0,0.1); padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 14px; }
+        #chart-container, #category-chart-container { position: relative; height: 220px; width: 100%; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+        .modal-content { background: var(--main-bg); margin: 5% auto; padding: 20px; border: 1px solid var(--border-color); width: 90%; max-width: 600px; border-radius: 12px; }
+        .modal-body { max-height: 70vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; }
+        .close-button { color: var(--text-secondary-color); font-size: 28px; font-weight: bold; cursor: pointer; }
+        #toast-container { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .toast { background-color: var(--toast-bg); color: var(--toast-color, #fff); padding: 12px 20px; border-radius: 25px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); opacity: 0; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s; font-size: 14px; }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { background-color: var(--success-color); color: #fff; } 
+        .toast.danger { background-color: var(--danger-color); color: #fff;} 
+        .toast.info { background-color: var(--info-color); color: #fff;}
+        .toast.gold { background: linear-gradient(45deg, #f0c72d, #d4a01d); color: #333; font-weight: bold; }
+        [data-editable="true"][contenteditable="true"] { outline: 2px dashed var(--info-color); background-color: rgba(41, 182, 246, 0.1); border-radius: 4px; padding: 2px 4px; }
+        .resposta-copiavel {
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            text-align: left;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .resposta-copiavel:hover { transform: scale(1.02); background-color: var(--info-background); }
+        .achievement { opacity: 0.4; transition: opacity 0.5s, transform 0.2s; border-left: 3px solid transparent; }
+        .achievement.unlocked { opacity: 1; font-weight: bold; border-left: 3px solid var(--gold-color); transform: scale(1.02); }
+        .achievement.unlocked::before { content: '🏆 '; color: var(--gold-color); }
+        .action-buttons { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 30px; }
+        .cases-footer-buttons { display: flex; gap: 10px; margin-top: auto; }
+        .modal-actions {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        #cases-list-container {
+            max-height: 350px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px;
+        }
+       
+        .case-entry {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 10px;
+            border: 1px solid transparent;
+            position: relative;
+            transition: background-color 0.3s, transform 0.2s, border-color 0.3s;
+        }
+        
+        body.theme-light .case-entry, 
+        body.theme-mint .case-entry { 
+            background-color: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.05);
+        }
+        body.theme-sunset .case-entry { background-color: rgba(0, 0, 0, 0.2); }
+        body.theme-graphite .case-entry { background-color: rgba(255, 255, 255, 0.03); }
+
+        .case-number {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            font-size: 11px;
+            width: 20px;
+            height: 20px;
+            line-height: 20px;
+        }
+        .case-main-content {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .expand-btn {
+            background: none;
+            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .expand-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .expand-btn.expanded svg {
+            transform: rotate(180deg);
+        }
+
+        .expand-btn:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+        body.theme-mint .expand-btn:hover { color: #f0fdf4; }
+        .case-fields {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .field-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .field-group .copy-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .case-entry .field-group input,
+        .case-entry .case-details-content textarea,
+        .case-entry .case-details-content select {
+            padding: 7px;
+            font-size: 14px;
+            border-radius: 6px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .case-entry .field-group input:focus,
+        .case-entry .case-details-content textarea:focus,
+        .case-entry .case-details-content select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .status-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-Pendente { background-color: var(--danger-color); }
+        .status-Em-Andamento { background-color: var(--warning-color); }
+        .status-Resolvido { background-color: var(--success-color); }
+
+        .case-details-content {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            flex-direction: column;
+            gap: 10px;
+        }
+        .case-details-content.visible { display: flex; }
+        .details-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            justify-content: flex-end;
+        }
+        .details-actions .button {
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+        
+        #daily-mission-list { list-style: none; padding: 0; margin: 0; }
+        #daily-mission-list li { margin-bottom: 8px; font-size: 14px; transition: color 0.3s, opacity 0.3s; }
+        #daily-mission-list li.completed { color: var(--success-color); text-decoration: line-through; opacity: 0.7; }
+        #daily-mission-list li::before { content: '◻️ '; font-family: monospace; }
+        #daily-mission-list li.completed::before { content: '✅ '; }
+        
+        #logbook-textarea { min-height: 50px; resize: vertical; }
+
+        .case-controls { 
+            display: flex; 
+            flex-wrap: nowrap; 
+            gap: 10px; 
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        #case-search-input { 
+            flex-grow: 1;
+            min-width: 80px; 
+        }
+        .filter-buttons-group {
+            display: flex;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+        .filter-btn {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+        }
+
+        .icon-button {
+            background: var(--secondary-button-bg);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary-color);
+            transition: all 0.2s;
+        }
+        .icon-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--primary-color);
+        }
+        .icon-button svg {
+            width: 20px;
+            height: 20px;
+        }
+        #links-uteis-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .link-util {
+            display: block;
+            background-color: var(--secondary-button-bg);
+            color: var(--text-color);
+            padding: 12px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.2s, transform 0.2s;
+            text-align: center;
+        }
+        .link-util:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        body.theme-light .link-util,
+        body.theme-mint .link-util {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        body.theme-light .link-util:hover,
+        body.theme-mint .link-util:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        
+        #senhas-container {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .senha-item {
+            background-color: rgba(0,0,0,0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid var(--primary-color);
+        }
+        .senha-item h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .senha-item p {
+            margin: 5px 0;
+        }
+        .copyable-credential {
+            background-color: var(--input-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .copyable-credential:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .app-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: var(--text-secondary-color);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            z-index: 500;
+            border-top: 1px solid var(--border-color);
+        }
+        .footer-link {
+            color: var(--text-secondary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.2s;
+        }
+        .footer-link:hover {
+            color: var(--primary-color);
+        }
+        .footer-logo {
+            height: 24px;
+            width: auto;
+        }
+        .footer-icon {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* --- ESTILOS DAS ABAS --- */
+        .tabs-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            width: 100%;
+            overflow-x: auto;
+        }
+        .tab-button {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-secondary-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-bottom: 3px solid transparent;
+            transition: color 0.3s, border-color 0.3s;
+            flex-shrink: 0;
+        }
+        .tab-button:hover {
+            color: var(--text-color);
+        }
+        .tab-button.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="toast-container"></div>
+
+    <div class="page-container">
+        <div class="header-metas">
+            <img src="logo.png" alt="Logo" class="header-logo">
+            <h1 id="main-title" data-editable="true">Suporte N2</h1>
+            <button id="settings-button" title="Configurar Metas">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.82l-.15.08a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1 0-2.82l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            </button>
+        </div>
+        
+        <div class="tabs-container">
+            <button class="tab-button active" data-tab="principal">Principal</button>
+            <button class="tab-button" data-tab="cancelamentos">Cancelamentos</button>
+            <button class="tab-button" data-tab="outros">Outros</button>
+        </div>
+        
+        <div id="tab-principal" class="tab-content active">
+            <div class="metas-grid">
+                <!-- CONTADORES -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-atendimentos" data-editable="true">Contadores</h2>
+                        <p id="subtitle-atendimentos" data-editable="true">Acompanhe o seu progresso para a comissão.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="daily-counters-row">
+                            <div class="form-group">
+                                <label id="label-protocolos" for="protocolosAnalisadosInput" data-editable="true">Protocolos (Dia):</label>
+                                <div class="input-with-button-container">
+                                    <input type="number" id="protocolosAnalisadosInput" placeholder="0">
+                                    <button type="button" id="incrementProtocolosButton" class="button" style="width: 70px;">+1</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="label-daily-cancellations" for="dailyCancellationsInput" data-editable="true">Cancelamentos (Dia):</label>
+                                <input type="number" id="dailyCancellationsInput" placeholder="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="label-atendimentos" for="atendimentosInput" data-editable="true">Total de Cancelamentos (Mês):</label>
+                            <input type="number" id="atendimentosInput" placeholder="0">
+                        </div>
+                        <div id="protocol-goals-container" style="margin-top: 15px;"></div>
+                        <div id="metas-container"></div>
+                        <div class="form-group">
+                            <label id="label-category" for="categorySelect" data-editable="true">Categoria do Cancelamento:</label>
+                            <div class="input-with-button-container">
+                                <select id="categorySelect">
+                                    <option id="category-option-1" data-editable="true">Sem Sinal</option>
+                                    <option id="category-option-2" data-editable="true">Massivo</option>
+                                    <option id="category-option-3" data-editable="true">Lentidão</option>
+                                    <option id="category-option-4" data-editable="true">Quedas de Conexão</option>
+                                    <option id="category-option-5" data-editable="true">Outros</option>
+                                </select>
+                                <button type="button" id="incrementButton" class="button" style="width: 70px;">+1</button>
+                            </div>
+                        </div>
+                        <div id="summary-text" class="summary-box">A aguardar os seus dados...</div>
+                    </div>
+                </div>
+                 <!-- HISTÓRICO DE CASOS -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-casos" data-editable="true">Histórico de Casos</h2>
+                        <p id="subtitle-casos" data-editable="true">Pesquise e gira os seus casos.</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="case-controls">
+                            <input type="search" id="case-search-input" placeholder="Pesquisar..." class="form-group">
+                            <div class="filter-buttons-group">
+                                <button type="button" class="button secondary-button filter-btn active" data-filter="all">Todos</button>
+                                <button type="button" class="button secondary-button filter-btn" data-filter="Pendente">Pendentes</button>
+                                <button type="button" class="button secondary-button filter-btn" data-filter="Resolvido">Resolvidos</button>
+                            </div>
+                        </div>
+                        <div id="cases-list-container"></div>
+                        <div class="cases-footer-buttons">
+                            <button type="button" id="addCaseButton" class="button secondary-button">+ Adicionar Caso</button>
+                        </div>
+                    </div>
+                </div>
+                 <!-- RESPOSTAS RÁPIDAS -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-respostas" data-editable="true">Respostas Rápidas</h2>
+                        <p id="subtitle-respostas" data-editable="true">Clique numa resposta para copiar o texto completo.</p>
+                    </div>
+                    <div class="card-body" id="respostas-container">
+                        <div id="resposta-1" class="summary-box resposta-copiavel" data-full-text="Olá, &#10;&#10;Aqui é Flávio, da empresa Desktop. Tudo bem com você?&#10;&#10;Quero te explicar sobre o reparo que estava agendado (protocolo [ XXXX ]): identificamos que a falha não está na sua residência, mas sim em um equipamento externo que leva o sinal até aí.&#10;&#10;Por isso, a visita técnica não seria eficaz e precisou ser cancelada.&#10;&#10;Mas não se preocupe! Nossa equipe já está cuidando disso e em breve você terá seu serviço restabelecido.&#10;&#10;Conte sempre com a Desktop. Estamos juntos para garantir sua melhor experiência!">Visita cancelada por falha externa. Equipa a atuar na correção.</div>
+                        <div id="resposta-2" class="summary-box resposta-copiavel" data-full-text="Olá, cliente Desktop!&#10;&#10;Meu nome é Flávio do Suporte Técnico N2 e estou entrando em contato com uma novidade incrível: identificamos uma oportunidade de melhorar ainda mais a qualidade da sua conexão com a Desktop — e o melhor, sem custo adicional!&#10;&#10;Nosso time técnico acompanha de perto o desempenho dos nossos clientes e notamos que uma atualização no seu equipamento pode proporcionar uma experiência ainda melhor.&#10;&#10;É só me informar a melhor data e horário, e cuidamos do resto!&#10;&#10;Fico no aguardo da sua resposta.&#10;&#10;Até mais!&#10;Flávio N2&#10;Equipe Desktop">Oportunidade de melhoria na conexão sem custo. Agende a atualização.</div>
+                        <div id="resposta-3" class="summary-box resposta-copiavel" data-full-text="Olá, cliente TOP!&#10;&#10;Sou o Flávio do Suporte Técnico N2, da empresa DESKTOP INTERNET!&#10;&#10;O motivo do nosso contato, é referente ao problema protocolo [ XXXX ] que estava causando falta de acesso à sua internet.&#10;Foi feita uma atualização e correção via sistema. Conseguimos resolver remotamente o seu problema.&#10;Poderia nos informar se a sua internet normalizou e se podemos cancelar sua visita?&#10;&#10;Seu protocolo de agendamento é: &#10;&#10;Se ainda estiver com problemas, a visita com o técnico no local será mantida para validação.">Problema resolvido remotamente. Confirme se a internet normalizou.</div>
+                        <div id="resposta-4" class="summary-box resposta-copiavel" data-full-text="Nesse caso vamos ter que prosseguir com a visita técnica Ok">Vamos prosseguir com a visita técnica para resolver o problema.</div>
+                        <div id="resposta-5" class="summary-box resposta-copiavel" data-full-text="A equipe N2 do suporte técnico da Desktop agradece e tudo de bom !">A equipa N2 da Desktop agradece. Tenha um ótimo dia!</div>
+                        <div id="resposta-6" class="summary-box resposta-copiavel" data-full-text="Frase reserva">Frase de reserva para uso geral em atendimentos.</div>
+                    </div>
+                </div>
+                <!-- MISSÃO DIÁRIA -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-daily-mission" data-editable="true">Missão Diária</h2>
+                        <p id="subtitle-daily-mission" data-editable="true">Os seus objetivos para hoje.</p>
+                    </div>
+                    <div class="card-body">
+                        <ul id="daily-mission-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-cancelamentos" class="tab-content">
+             <div class="metas-grid">
+                <!-- DIÁRIO DE BORDO -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <h2 id="title-logbook" data-editable="true">Diário de Bordo</h2>
+                        <p id="subtitle-logbook" data-editable="true">Anote eventos importantes do dia.</p>
+                    </div>
+                    <div class="card-body">
+                        <textarea id="logbook-textarea" class="form-group" placeholder="Ex: Instabilidade massiva na região X..."></textarea>
+                    </div>
+                </div>
+                <!-- HISTÓRICO DE ENTRADAS -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-historico" data-editable="true">Histórico de Entradas</h2></div>
+                    <div class="card-body">
+                        <ul id="history-list"></ul>
+                    </div>
+                </div>
+                <!-- PROJEÇÃO -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-projecao" data-editable="true">Projeção de Cancelamentos</h2></div>
+                    <div class="card-body" style="justify-content: center; align-items: center; text-align: center;">
+                        <div id="projection-value" class="projection-value" style="color: var(--warning-color);">0</div>
+                        <div id="projection-formula">A aguardar histórico...</div>
+                        <div id="tier-projection-container" style="margin-top: 15px; font-size: 14px; width: 100%;"></div>
+                    </div>
+                </div>
+                <!-- RESUMO CATEGORIA -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-resumo-categoria" data-editable="true">Resumo por Categoria</h2></div>
+                    <div class="card-body">
+                        <div id="category-chart-container">
+                            <canvas id="categoryPieChart"></canvas>
+                        </div>
+                        <ul id="category-summary-list" style="margin-top: 15px;"></ul>
+                    </div>
+                </div>
+                <!-- GRÁFICO -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-grafico" data-editable="true">Gráfico de Tendência</h2></div>
+                    <div class="card-body">
+                        <div id="chart-container"><canvas id="trendChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="tab-outros" class="tab-content">
+             <div class="metas-grid">
+                <!-- LINKS -->
+                <div class="meta-card">
+                    <div class="card-header">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <h2 id="title-links" data-editable="true">Links Úteis</h2>
+                            <button id="senhas-button" title="Ver Senhas" class="icon-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                            </button>
+                        </div>
+                        <p id="subtitle-links" data-editable="true">Aceda a sistemas importantes com um clique.</p>
+                    </div>
+                    <div class="card-body" id="links-uteis-container-body">
+                        <div id="links-uteis-container">
+                            <a href="http://172.30.0.141:8080" target="_blank" class="link-util" id="link-text-1" data-editable="true">SIG</a>
+                            <a href="http://172.30.0.141:8080/oportunidades" target="_blank" class="link-util" id="link-text-2" data-editable="true">SIG - Oportunidades</a>
+                            <a href="https://172.30.0.141" target="_blank" class="link-util" id="link-text-3" data-editable="true">Deskpedia</a>
+                            <a href="https://desktopsa.my.salesforce.com" target="_blank" class="link-util" id="link-text-4" data-editable="true">SalesForce</a>
+                            <a href="https://desktop.matrixdobrasil.ai/Painel/login" target="_blank" class="link-util" id="link-text-5" data-editable="true">Matrix Chat</a>
+                            <a href="http://sis.desktop.com.br" target="_blank" class="link-util" id="link-text-6" data-editable="true">SIS</a>
+                            <a href="https://adm.desktop.com.br" target="_blank" class="link-util" id="link-text-7" data-editable="true">ADM</a>
+                            <a href="https://login.lg.com.br/login/desktop" target="_blank" class="link-util" id="link-text-8" data-editable="true">LG</a>
+                            <a href="https://webmail.desktop.com.br" target="_blank" class="link-util" id="link-text-9" data-editable="true">WebMail</a>
+                            <a href="https://netcore.desktop.localdomain/weboss/reprovisiona_gpon" target="_blank" class="link-util" id="link-text-10" data-editable="true">NetCore</a>
+                            <a href="https://desktopcombr.sharepoint.com/sites/EQUIPEDEPROCESSOS/repositorio_materiais/SitePages/LearningTeamHome.aspx" target="_blank" class="link-util" id="link-text-11" data-editable="true">Novo Pulpo</a>
+                            <a href="https://docs.google.com/spreadsheets/d/1zkNxgYOs8iWMSwdgtwV4-g0RxmkoI_jgdclkpGjF3Rc/edit#gid=0" target="_blank" class="link-util" id="link-text-12" data-editable="true">Cancelados COP</a>
+                            <a href="https://desktopcombr.sharepoint.com/:p:/r/sites/EQUIPEDEPROCESSOS/repositorio_materiais/_layouts/15/doc2.aspx?sourcedoc=%7BE78AE514-642A-4F46-8FBB-2C54C51C9945%7D&file=MODELOS%20DE%20EQUIPAMENTOS.pptx&action=edit&mobileredirect=true" target="_blank" class="link-util" id="link-text-13" data-editable="true">Modelos de Roteadores</a>
+                            <a href="https://www.flavioitech.com" target="_blank" class="link-util" id="link-text-14" data-editable="true">Meu Site</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- COMISSÃO -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-comissao" data-editable="true">Comissão Estimada</h2></div>
+                    <div class="card-body" style="justify-content: center; align-items: center;">
+                        <div id="bonus-value" class="bonus-value" style="color: var(--success-color);">R$ 0,00</div>
+                        <div id="bonus-formula">A aguardar dados...</div>
+                    </div>
+                </div>
+                <!-- CONQUISTAS -->
+                <div class="meta-card">
+                    <div class="card-header"><h2 id="title-conquistas" data-editable="true">Conquistas 🏆</h2></div>
+                    <div class="card-body">
+                        <ul id="achievement-list">
+                            <li id="achieve-first-save" class="achievement">Guardar o progresso pela primeira vez.</li>
+                            <li id="achieve-bonus1" class="achievement">Atingir a primeira faixa de comissão.</li>
+                            <li id="achieve-max-bonus" class="achievement">Atingir a meta máxima pela primeira vez.</li>
+                            <li id="achieve-100-cancellations" class="achievement">Atingir 100 cancelamentos no mês.</li>
+                            <li id="achieve-200-cancellations" class="achievement">Atingir 200 cancelamentos no mês.</li>
+                            <li id="achieve-5day-streak" class="achievement">Guardar o progresso por 5 dias seguidos.</li>
+                            <li id="achieve-10-day-streak" class="achievement">Guardar o progresso por 10 dias seguidos.</li>
+                            <li id="achieve-30-days" class="achievement">Guardar o progresso em 30 dias diferentes.</li>
+                            <li id="achieve-first-case" class="achievement">Adicionar o seu primeiro caso.</li>
+                            <li id="achieve-10-cases" class="achievement">Registar 10 casos na lista.</li>
+                            <li id="achieve-25-cases" class="achievement">Registar 25 casos na lista.</li>
+                            <li id="achieve-all-status" class="achievement">Utilizar todos os 3 status de caso.</li>
+                            <li id="achieve-all-categories" class="achievement">Utilizar 5 categorias diferentes.</li>
+                            <li id="achieve-copy-response" class="achievement">Copiar uma resposta rápida pela primeira vez.</li>
+                            <li id="achieve-use-all-quick-responses" class="achievement">Utilizar todas as respostas rápidas.</li>
+                            <li id="achieve-customize" class="achievement">Personalizar os textos da aplicação.</li>
+                            <li id="achieve-change-theme" class="achievement">Personalizar o visual com um novo tema.</li>
+                            <li id="achieve-export" class="achievement">Fazer o primeiro backup dos seus dados.</li>
+                            <li id="achieve-50-protocols" class="achievement">Analisar 50 protocolos num dia.</li>
+                            <li id="achieve-monthly-protocol-goal" class="achievement">Atingir a meta mensal de 1300 protocolos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button type="button" id="saveButton" class="button save-button">Guardar Progresso</button>
+            <button type="button" id="editButton" class="button secondary-button">✏️ Editar Textos</button>
+            <button type="button" id="themeToggleButton" class="button">Mudar Tema</button>
+        </div>
+    </div>
+
+    <footer class="app-footer">
+        <a href="https://www.flavioitech.com" target="_blank" class="footer-link">
+            <img src="logo.png" alt="Logo" class="footer-logo" id="footer-logo-img">
+            <span id="footer-site-text" data-editable="true">Meu Site</span>
+        </a>
+        <a href="https://wa.me/5519998821845" target="_blank" class="footer-link">
+            <svg class="footer-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
+                <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 221.9-99.6 221.9-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-67.6-9.5-97.8-27.2l-6.9-4.1-72.7 19.1L48.4 358s-4.4-7.2-12.1-99.6c0-11.4 2.9-22.5 8.4-32.9l16.4-30.3c34.9-64.4 106.4-104.1 180.1-104.1 32.5 0 63.8 12.8 86.8 35.7 23 22.9 35.9 54.1 35.9 86.6 0 92.8-74.9 167.8-167.7 167.8zm118.9-194.3c-4.1-2-24.5-12.1-28.4-13.5-3.9-1.4-6.7-2-9.5 2-2.8 4-10.8 13.5-13.2 16.2-2.4 2.8-4.8 3.1-8.9 1.1-4.1-2-17.4-6.4-33.1-20.4-12.2-10.8-20.4-24.1-22.8-28.2-2.4-4.1-.2-6.3 1.8-8.3 1.8-1.8 4.1-4.8 6.1-7.1 2-2.3 2.7-4.1 4.1-6.9 1.4-2.8.7-5.1-1.4-7.1s-9.5-22.8-13-31.1c-3.5-8.3-7.1-7.1-9.5-7.1-2.4 0-5.1 0-7.8 0-2.8 0-7.1 1.1-10.8 5.1-3.7 4-14.2 13.9-14.2 33.9 0 20 14.5 39.3 16.5 41.7 2 2.4 28.4 43.4 69.1 60.9 9.8 4.2 17.5 6.7 23.4 8.6 5.9 1.9 11.2 1.6 15.5 1 4.8-.6 15.1-6.2 17.2-12.1 2.1-5.9 2.1-11 1.4-12.1-0.7-1.1-2.8-1.8-5.9-3.8z"/>
+            </svg>
+            <span id="footer-whatsapp-text" data-editable="true">19 99882-1845</span>
+        </a>
+    </footer>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="title-modal-config" data-editable="true">Configurar Metas e Alertas</h2>
+                <span class="close-button" id="close-settings-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="settings-form">
+                    <h4 id="subtitle-modal-salario" data-editable="true">Salário Base (para cálculo)</h4>
+                    <div class="form-group">
+                         <input type="number" id="baseSalaryInput" placeholder="Ex: 2500.00" step="0.01">
+                    </div>
+                    <hr style="border-color: var(--border-color); margin: 20px 0;">
+
+                    <h4 id="subtitle-modal-metas" data-editable="true">Metas de Cancelamento</h4>
+                    <p style="font-size: 12px; color: var(--text-secondary-color); margin-top: -10px;" id="desc-modal-metas" data-editable="true">Defina a quantidade de cancelamentos e a comissão em percentagem (%) do salário.</p>
+                    <div id="settings-metas-container"></div>
+                    <hr style="border-color: var(--border-color); margin: 20px 0;">
+                    
+                    <h4 id="subtitle-modal-notificacoes" data-editable="true">Notificações</h4>
+                    <div class="form-group" style="display: flex; align-items: center; gap: 15px; justify-content: center;">
+                        <input type="checkbox" id="reminderEnabled" style="width: auto;">
+                        <label for="reminderEnabled" style="margin: 0;" id="label-modal-lembrete" data-editable="true">Ativar lembrete diário</label>
+                        <input type="time" id="reminderTime">
+                    </div>
+                    <button type="submit" class="button save-button" style="width: 100%; margin-top: 20px;">Guardar Configurações</button>
+                </form>
+
+                <div class="modal-actions">
+                    <button type="button" id="importButton" class="button secondary-button">Importar Dados</button>
+                    <button type="button" id="exportButton" class="button secondary-button">Exportar Dados</button>
+                    <button type="button" id="installAppButton" class="button">Instalar App</button>
+                    <button type="button" id="clearCacheButton" class="button secondary-button">Limpar Cache</button>
+                    <button type="button" id="resetButton" class="button reset-button">Repor Todos os Dados</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="senhas-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="title-modal-senhas" data-editable="true">Senhas de Acesso</h2>
+                <span class="close-button" id="close-senhas-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="senhas-container">
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-1" data-editable="true">SIG</h4>
+                        <p><strong id="senha-label-user-1" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-1" data-editable="true">flavio.cardozo@desktop.tec.br</span></p>
+                        <p><strong id="senha-label-pass-1" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-1" data-editable="true">Suporte N2</span></p>
+                    </div>
+                     <div class="senha-item">
+                        <h4 id="senha-sistema-2" data-editable="true">SalesForce</h4>
+                        <p><strong id="senha-label-user-2" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-2" data-editable="true">flavio.cardozo@desktop.tec.br</span></p>
+                        <p><strong id="senha-label-pass-2" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-2" data-editable="true">@Flavero85</span></p>
+                    </div>
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-3" data-editable="true">Matrix Chat</h4>
+                        <p><strong id="senha-label-user-3" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-3" data-editable="true">flavio.cardozo@desktop.tec.br</span></p>
+                        <p><strong id="senha-label-pass-3" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-3" data-editable="true">Fb5!ji</span></p>
+                    </div>
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-4" data-editable="true">SIS</h4>
+                        <p><strong id="senha-label-user-4" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-4" data-editable="true">flavio.cardozo</span></p>
+                        <p><strong id="senha-label-pass-4" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-4" data-editable="true">@PSLk869</span></p>
+                    </div>
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-5" data-editable="true">ADM</h4>
+                        <p><strong id="senha-label-user-5" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-5" data-editable="true">flavio.cardozo@desktop.tec.br</span></p>
+                        <p><strong id="senha-label-pass-5" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-5" data-editable="true">Flavero1609</span></p>
+                    </div>
+                     <div class="senha-item">
+                        <h4 id="senha-sistema-6" data-editable="true">LG</h4>
+                        <p><strong id="senha-label-user-6" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-6" data-editable="true">34792557879</span></p>
+                        <p><strong id="senha-label-pass-6" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-6" data-editable="true">@Flavero85</span></p>
+                    </div>
+                     <div class="senha-item">
+                        <h4 id="senha-sistema-7" data-editable="true">WebMail</h4>
+                        <p><strong id="senha-label-user-7" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-7" data-editable="true">flavio.cardozo@desktop.tec.br</span></p>
+                        <p><strong id="senha-label-pass-7" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-7" data-editable="true">eWJBP[ar8V</span></p>
+                    </div>
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-8" data-editable="true">NetCore</h4>
+                        <p><strong id="senha-label-user-8" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-8" data-editable="true">flavio.cardozo@desktop.tec.br</span></p>
+                        <p><strong id="senha-label-pass-8" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-8" data-editable="true">Flavero1609</span></p>
+                    </div>
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-9" data-editable="true">URA</h4>
+                        <p><strong id="senha-label-user-9" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-9" data-editable="true">agent/11271 9323 RAMAL 2589</span></p>
+                        <p><strong id="senha-label-pass-9" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-9" data-editable="true">mvjYsE1</span></p>
+                    </div>
+                    <div class="senha-item">
+                        <h4 id="senha-sistema-10" data-editable="true">Reserva</h4>
+                        <p><strong id="senha-label-user-10" data-editable="true">Utilizador:</strong> <span class="copyable-credential" id="senha-user-10" data-editable="true">flavio.cardozo</span></p>
+                        <p><strong id="senha-label-pass-10" data-editable="true">Senha:</strong> <span class="copyable-credential" id="senha-pass-10" data-editable="true">senha123</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- LÓGICA PWA ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then(reg => console.log('ServiceWorker registado:', reg.scope))
+                .catch(err => console.error('Falha no registo do ServiceWorker:', err));
+        });
+    }
+
+    // --- SELETORES DE ELEMENTOS ---
+    const dailyCancellationsInput = document.getElementById('dailyCancellationsInput');
+    const atendimentosInput = document.getElementById('atendimentosInput');
+    const protocolosAnalisadosInput = document.getElementById('protocolosAnalisadosInput');
+    const protocolGoalsContainer = document.getElementById('protocol-goals-container');
+    const incrementProtocolosButton = document.getElementById('incrementProtocolosButton');
+    const metasContainer = document.getElementById('metas-container');
+    const summaryText = document.getElementById('summary-text');
+    const incrementButton = document.getElementById('incrementButton');
+    const categorySelect = document.getElementById('categorySelect');
+    const categorySummaryList = document.getElementById('category-summary-list');
+    const achievementList = document.getElementById('achievement-list');
+    const saveButton = document.getElementById('saveButton');
+    const resetButton = document.getElementById('resetButton');
+    const exportButton = document.getElementById('exportButton');
+    const importButton = document.getElementById('importButton');
+    const settingsButton = document.getElementById('settings-button');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettingsModal = document.getElementById('close-settings-modal');
+    const settingsForm = document.getElementById('settings-form');
+    const baseSalaryInput = document.getElementById('baseSalaryInput');
+    const settingsMetasContainer = document.getElementById('settings-metas-container');
+    const bonusValueEl = document.getElementById('bonus-value');
+    const bonusFormulaEl = document.getElementById('bonus-formula');
+    const historyListEl = document.getElementById('history-list');
+    const projectionValueEl = document.getElementById('projection-value');
+    const projectionFormulaEl = document.getElementById('projection-formula');
+    const tierProjectionContainer = document.getElementById('tier-projection-container');
+    const trendChartCanvas = document.getElementById('trendChart');
+    const categoryPieChartCanvas = document.getElementById('categoryPieChart');
+    const installAppButton = document.getElementById('installAppButton');
+    const toastContainer = document.getElementById('toast-container');
+    const editButton = document.getElementById('editButton');
+    const respostasContainer = document.getElementById('respostas-container');
+    const reminderEnabledInput = document.getElementById('reminderEnabled');
+    const reminderTimeInput = document.getElementById('reminderTime');
+    const casesListContainer = document.getElementById('cases-list-container');
+    const addCaseButton = document.getElementById('addCaseButton');
+    const caseSearchInput = document.getElementById('case-search-input');
+    const caseFilterButtons = document.querySelectorAll('.filter-btn');
+    const themeToggleButton = document.getElementById('themeToggleButton');
+    const senhasButton = document.getElementById('senhas-button');
+    const senhasModal = document.getElementById('senhas-modal');
+    const closeSenhasModal = document.getElementById('close-senhas-modal');
+    const senhasContainer = document.getElementById('senhas-container');
+    const clearCacheButton = document.getElementById('clearCacheButton');
+    const dailyMissionList = document.getElementById('daily-mission-list');
+    const logbookTextarea = document.getElementById('logbook-textarea');
+    const tabsContainer = document.querySelector('.tabs-container');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const tabButtons = document.querySelectorAll('.tab-button');
+
+
+    // --- VARIÁVEIS DE ESTADO ---
+    let trendChart;
+    let categoryPieChart;
+    let deferredInstallPrompt;
+    let isEditMode = false;
+    let notificationTimeout;
+    let previousDailyCancellations = 0;
+    const themes = ['dark', 'light', 'mint', 'sunset', 'graphite'];
+    let dailyCopyCount = 0;
+    
+    // --- CONSTANTES ---
+    const DAILY_PROTOCOL_GOAL = 50;
+    const MONTHLY_PROTOCOL_GOAL = 1300;
+    const TOTAL_WORKING_DAYS = 26;
+    
+    // --- ESTRUTURAS DE DADOS ---
+    let metas = JSON.parse(localStorage.getItem('customMetas')) || [
+        { id: 1, target: 10, reward: 0.24 }, { id: 2, target: 20, reward: 0.48 }, { id: 3, target: 30, reward: 0.70 }
+    ];
+    let allCases = JSON.parse(localStorage.getItem('casesList')) || [];
+    let baseSalary = parseFloat(localStorage.getItem('baseSalary')) || 0;
+    let history = JSON.parse(localStorage.getItem('performanceHistory')) || [];
+    let categoryCounts = JSON.parse(localStorage.getItem('categoryCounts')) || {};
+    let unlockedAchievements = JSON.parse(localStorage.getItem('unlockedAchievements')) || [];
+    let reminderSettings = JSON.parse(localStorage.getItem('reminderSettings')) || { enabled: false, time: '18:00' };
+    let usedStatuses = new Set(JSON.parse(localStorage.getItem('usedStatuses')) || []);
+    let usedQuickResponses = new Set(JSON.parse(localStorage.getItem('usedQuickResponses')) || []);
+    let dailyLogbook = JSON.parse(localStorage.getItem('dailyLogbook')) || {};
+    
+    // --- FUNÇÕES AUXILIARES ---
+    const vibrate = () => { if ('vibrate' in navigator) navigator.vibrate(50); };
+    function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        toastContainer.appendChild(toast);
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 3000);
+        }, 3000);
+    }
+    const parseDate = (str) => {
+        try {
+            const [day, month, year] = str.split('/').map(Number);
+            return new Date(year, month - 1, day);
+        } catch (e) {
+            return new Date();
+        }
+    };
+    const getTodayDateString = () => new Date().toLocaleDateString('pt-BR');
+
+    // --- FUNÇÃO DE CÓPIA UNIVERSAL ---
+    function copyToClipboard(text, successMessage) {
+        if (!text) {
+            showToast('Nada para copiar.', 'info');
+            return;
+        }
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(successMessage, 'success');
+                vibrate();
+            }).catch(err => {
+                console.error('Erro ao copiar com a API moderna:', err);
+                legacyCopy(text, successMessage);
+            });
+        } else {
+            legacyCopy(text, successMessage);
+        }
+    }
+
+    function legacyCopy(text, successMessage) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'absolute';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast(successMessage, 'success');
+            vibrate();
+        } catch (err) {
+            console.error('Falha ao copiar com o método antigo:', err);
+            showToast('Falha ao copiar', 'danger');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    // --- LÓGICA DE EDIÇÃO DE TEXTO ---
+    const loadCustomTexts = function() {
+        const customTexts = JSON.parse(localStorage.getItem('appCustomTexts'));
+        if (customTexts) {
+            document.querySelectorAll('[data-editable="true"]').forEach(el => {
+                 if (customTexts[el.id]) {
+                    if (el.classList.contains('resposta-copiavel') && typeof customTexts[el.id] === 'object') {
+                        el.innerHTML = customTexts[el.id].summary;
+                        el.dataset.fullText = customTexts[el.id].fullText;
+                    } else {
+                        el.innerHTML = customTexts[el.id];
+                        if (el.tagName === 'OPTION') el.value = customTexts[el.id];
+                    }
+                }
+            });
+        }
+    };
+    const saveCustomTexts = function() {
+        const customTexts = {};
+        document.querySelectorAll('[data-editable="true"]').forEach(el => {
+             if (el.classList.contains('resposta-copiavel')) {
+                customTexts[el.id] = {
+                    summary: el.innerHTML,
+                    fullText: el.dataset.fullText
+                };
+            } else {
+                customTexts[el.id] = el.innerHTML;
+            }
+        });
+        localStorage.setItem('appCustomTexts', JSON.stringify(customTexts));
+    };
+    const toggleEditMode = function() {
+        isEditMode = !isEditMode;
+        const editables = document.querySelectorAll('[data-editable="true"]');
+        if (isEditMode) {
+            editables.forEach(el => { 
+                if (el.tagName !== 'OPTION' && !el.classList.contains('resposta-copiavel')) {
+                    el.setAttribute('contenteditable', 'true'); 
+                }
+            });
+            editButton.innerHTML = "✅ Guardar Textos";
+            editButton.classList.add('save-button');
+            showToast("Modo de edição ativado!", 'info');
+        } else {
+            editables.forEach(el => el.setAttribute('contenteditable', 'false'));
+            editButton.innerHTML = "✏️ Editar Textos";
+            editButton.classList.remove('save-button');
+            saveCustomTexts();
+            unlockAchievement('achieve-customize', 'Interface personalizada!');
+            showToast("Textos personalizados guardados!", 'success');
+        }
+    };
+    
+    // --- LÓGICA DE CATEGORIAS, CONQUISTAS, NOTIFICAÇÕES ---
+    const renderCategorySummary = () => {
+        const categoriesWithCounts = Object.keys(categoryCounts).filter(cat => categoryCounts[cat] > 0);
+        if (categoriesWithCounts.length === 0) {
+            categorySummaryList.innerHTML = '<li>Nenhuma categoria registada.</li>';
+            return;
+        }
+        categorySummaryList.innerHTML = categoriesWithCounts
+            .sort((a, b) => categoryCounts[b] - categoryCounts[a])
+            .map(cat => `<li><strong>${cat}:</strong> ${categoryCounts[cat]}</li>`)
+            .join('');
+    };
+    const unlockAchievement = (id, text) => {
+        if (unlockedAchievements[id]) return;
+        unlockedAchievements[id] = true;
+        localStorage.setItem('unlockedAchievements', JSON.stringify(unlockedAchievements));
+        const el = document.getElementById(id);
+        if (el) el.classList.add('unlocked');
+        showToast(`Conquista: ${text}`, 'gold');
+        vibrate();
+    };
+    const renderAchievements = () => Object.keys(unlockedAchievements).forEach(id => { const el = document.getElementById(id); if (el) el.classList.add('unlocked'); });
+    const checkAchievements = () => {
+        const currentValue = parseInt(atendimentosInput.value) || 0;
+        const currentProtocols = parseInt(protocolosAnalisadosInput.value) || 0;
+        const totalQuickResponses = document.querySelectorAll('#respostas-container .resposta-copiavel').length;
+
+        if (metas.length > 0 && currentValue >= metas[0].target) unlockAchievement('achieve-bonus1', 'Primeira faixa de comissão!');
+        if (metas.length > 0 && currentValue >= metas[metas.length - 1].target) unlockAchievement('achieve-max-bonus', 'Meta máxima atingida!');
+        
+        if (history.length >= 5) {
+            const last5Dates = history.slice(-5).map(h => parseDate(h.date));
+            let isStreak = true;
+            for (let i = 1; i < last5Dates.length; i++) { if ((last5Dates[i] - last5Dates[i-1]) / 86400000 !== 1) { isStreak = false; break; } }
+            if (isStreak) unlockAchievement('achieve-5day-streak', 'Guardou por 5 dias seguidos!');
+        }
+        if (history.length >= 10) {
+            const last10Dates = history.slice(-10).map(h => parseDate(h.date));
+            let isStreak = true;
+            for (let i = 1; i < last10Dates.length; i++) { if ((last10Dates[i] - last10Dates[i-1]) / 86400000 !== 1) { isStreak = false; break; } }
+            if (isStreak) unlockAchievement('achieve-10-day-streak', 'Guardou por 10 dias seguidos!');
+        }
+
+        if (Object.keys(categoryCounts).length >= 5) unlockAchievement('achieve-all-categories', 'Usou 5 categorias diferentes!');
+        if (history.length >= 30) unlockAchievement('achieve-30-days', 'Guardou por 30 dias diferentes!');
+        if (currentValue >= 100) unlockAchievement('achieve-100-cancellations', 'Atingiu 100 cancelamentos!');
+        if (currentValue >= 200) unlockAchievement('achieve-200-cancellations', 'Atingiu 200 cancelamentos!');
+        if (allCases.length >= 10) unlockAchievement('achieve-10-cases', 'Registou 10 casos!');
+        if (allCases.length >= 25) unlockAchievement('achieve-25-cases', 'Registou 25 casos!');
+        if (usedStatuses.size >= 3) unlockAchievement('achieve-all-status', 'Usou todos os status de caso!');
+        if (currentProtocols >= 50) unlockAchievement('achieve-50-protocols', 'Analisou 50 protocolos hoje!');
+        
+        const monthlyProtocols = history.filter(h => parseDate(h.date).getMonth() === new Date().getMonth()).reduce((sum, h) => sum + (h.protocols || 0), 0);
+        if (monthlyProtocols >= MONTHLY_PROTOCOL_GOAL) unlockAchievement('achieve-monthly-protocol-goal', 'Meta mensal de protocolos batida!');
+        
+        if (usedQuickResponses.size >= totalQuickResponses) unlockAchievement('achieve-use-all-quick-responses', 'Mestre das respostas rápidas!');
+    };
+    const scheduleReminder = () => {
+        clearTimeout(notificationTimeout);
+        if (!reminderSettings.enabled || !('Notification' in window)) return;
+        const [hour, minute] = reminderSettings.time.split(':');
+        const now = new Date();
+        let reminderDate = new Date();
+        reminderDate.setHours(hour, minute, 0, 0);
+        if (now > reminderDate) reminderDate.setDate(reminderDate.getDate() + 1);
+        const timeToReminder = reminderDate.getTime() - now.getTime();
+        notificationTimeout = setTimeout(() => {
+            Notification.requestPermission().then(perm => {
+                if (perm === 'granted') navigator.serviceWorker.ready.then(reg => reg.showNotification('Lembrete de Metas', { body: 'Não se esqueça de guardar o seu progresso de hoje!', icon: 'icons/icon-192x192.png', tag: 'metas-reminder' }));
+            });
+            scheduleReminder();
+        }, timeToReminder);
+    };
+
+    // --- LÓGICA PARA HISTÓRICO DE CASOS ---
+    const saveCases = () => localStorage.setItem('casesList', JSON.stringify(allCases));
+    const renderCases = (filter = 'all', searchTerm = '') => {
+        casesListContainer.innerHTML = '';
+        
+        const normalizedSearch = searchTerm.toLowerCase().trim();
+        const filteredCases = allCases.filter(caseItem => {
+            const statusMatch = filter === 'all' || caseItem.status === filter;
+            const searchMatch = !normalizedSearch ||
+                caseItem.protocol?.toLowerCase().includes(normalizedSearch) ||
+                caseItem.phone?.toLowerCase().includes(normalizedSearch) ||
+                caseItem.description?.toLowerCase().includes(normalizedSearch);
+            return statusMatch && searchMatch;
+        });
+
+        if (filteredCases.length === 0) {
+            casesListContainer.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary-color); text-align: center;">Nenhum caso encontrado.</p>';
+            return;
+        }
+
+        filteredCases.forEach((caseItem) => {
+            const statusClass = caseItem.status?.replace(' ', '-') || 'Pendente';
+            const entryDiv = document.createElement('div');
+            entryDiv.className = 'case-entry';
+            entryDiv.setAttribute('data-id', caseItem.id);
+
+            entryDiv.innerHTML = `
+                <div class="case-main-content">
+                    <button class="expand-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </button>
+                    <div class="case-fields">
+                        <div class="field-group">
+                            <input type="text" class="protocol-input" value="${caseItem.protocol || ''}" placeholder="Protocolo">
+                            <button class="button secondary-button copy-btn copy-protocol-btn">Copiar</button>
+                        </div>
+                        <div class="field-group">
+                            <input type="text" class="phone-input" value="${caseItem.phone || ''}" placeholder="Telefone">
+                            <button class="button secondary-button copy-btn copy-phone-btn">Copiar</button>
+                        </div>
+                    </div>
+                    <div class="status-indicator status-${statusClass}" title="${caseItem.status || 'Pendente'}"></div>
+                </div>
+                <div class="case-details-content">
+                    <textarea class="description-input" placeholder="Descrição do caso...">${caseItem.description || ''}</textarea>
+                    <select class="status-select">
+                        <option value="Pendente" ${caseItem.status === 'Pendente' ? 'selected' : ''}>Pendente</option>
+                        <option value="Em Andamento" ${caseItem.status === 'Em Andamento' ? 'selected' : ''}>Em Andamento</option>
+                        <option value="Resolvido" ${caseItem.status === 'Resolvido' ? 'selected' : ''}>Resolvido</option>
+                    </select>
+                     <div style="font-size: 11px; color: var(--text-secondary-color); text-align: right; margin-top: 5px;">Criado em: ${caseItem.date}</div>
+                    <div class="details-actions">
+                        <button class="button secondary-button copy-case-all-btn">Copiar Tudo</button>
+                        <button class="button reset-button remove-case-btn">Excluir Caso</button>
+                    </div>
+                </div>
+            `;
+            casesListContainer.appendChild(entryDiv);
+        });
+    };
+    
+    // --- LÓGICA DO DIÁRIO DE BORDO E MISSÃO DIÁRIA ---
+    const saveLogbook = () => {
+        const today = getTodayDateString();
+        dailyLogbook[today] = logbookTextarea.value;
+        localStorage.setItem('dailyLogbook', JSON.stringify(dailyLogbook));
+    };
+    
+    const updateDailyMission = () => {
+        const protocols = parseInt(protocolosAnalisadosInput.value) || 0;
+        const savedToday = history.some(h => h.date === getTodayDateString());
+        const dailyCancellations = parseInt(dailyCancellationsInput.value) || 0;
+        const casesAddedToday = allCases.filter(c => c.date === getTodayDateString()).length;
+
+        const missions = [
+            { id: 'mission-protocols', text: `Analisar ${DAILY_PROTOCOL_GOAL} protocolos`, completed: protocols >= DAILY_PROTOCOL_GOAL },
+            { id: 'mission-daily-cancellations', text: `Registar 6 cancelamentos hoje (${dailyCancellations}/6)`, completed: dailyCancellations >= 6 },
+            { id: 'mission-copy-responses', text: `Copiar 20 respostas (${dailyCopyCount}/20)`, completed: dailyCopyCount >= 20 },
+            { id: 'mission-new-cases', text: `Adicionar 3 novos casos (${casesAddedToday}/3)`, completed: casesAddedToday >= 3 },
+            { id: 'mission-save', text: 'Guardar o progresso de hoje', completed: savedToday }
+        ];
+
+        dailyMissionList.innerHTML = missions.map(mission => 
+            `<li id="${mission.id}" class="${mission.completed ? 'completed' : ''}">${mission.text}</li>`
+        ).join('');
+    };
+
+
+    // --- FUNÇÕES PRINCIPAIS DE RENDERIZAÇÃO E CÁLCULO ---
+    const renderAtendimentoMetas = () => {
+        metasContainer.innerHTML = '';
+        metas.sort((a, b) => a.target - b.target).forEach(meta => {
+            const metaElement = document.createElement('div');
+            metaElement.className = 'meta-item';
+            metaElement.innerHTML = `<div class="meta-header"><span class="meta-label">Faixa ${meta.id}: ${meta.target} (${(meta.reward || 0) * 100}%)</span><span class="meta-percentage" id="meta${meta.id}-percent">0%</span></div><div class="progress-bar-background"><div class="progress-bar-fill" id="meta${meta.id}-fill"></div></div>`;
+            metasContainer.appendChild(metaElement);
+        });
+    };
+    const updateProtocolProgress = () => {
+        const dailyProtocols = parseInt(protocolosAnalisadosInput.value) || 0;
+        const currentMonth = new Date().getMonth();
+        const monthlyProtocols = history
+            .filter(h => parseDate(h.date).getMonth() === currentMonth)
+            .reduce((sum, h) => sum + (h.protocols || 0), 0);
+
+        const dailyPercent = DAILY_PROTOCOL_GOAL > 0 ? Math.min(100, (dailyProtocols / DAILY_PROTOCOL_GOAL) * 100) : 0;
+        const monthlyPercent = MONTHLY_PROTOCOL_GOAL > 0 ? Math.min(100, (monthlyProtocols / MONTHLY_PROTOCOL_GOAL) * 100) : 0;
+
+        protocolGoalsContainer.innerHTML = `
+            <div class="meta-item">
+                <div class="meta-header">
+                    <span class="meta-label">Meta Diária de Protocolos (${dailyProtocols}/${DAILY_PROTOCOL_GOAL})</span>
+                    <span class="meta-percentage">${Math.floor(dailyPercent)}%</span>
+                </div>
+                <div class="progress-bar-background">
+                    <div class="progress-bar-fill ${dailyPercent >= 100 ? 'completed' : ''}" style="width: ${dailyPercent}%;"></div>
+                </div>
+            </div>
+            <div class="meta-item">
+                <div class="meta-header">
+                    <span class="meta-label">Meta Mensal de Protocolos (${monthlyProtocols}/${MONTHLY_PROTOCOL_GOAL})</span>
+                    <span class="meta-percentage">${Math.floor(monthlyPercent)}%</span>
+                </div>
+                <div class="progress-bar-background">
+                    <div class="progress-bar-fill ${monthlyPercent >= 100 ? 'completed' : ''}" style="width: ${monthlyPercent}%;"></div>
+                </div>
+            </div>
+        `;
+    };
+    const updateAtendimentoProgress = () => {
+        const currentValue = parseInt(atendimentosInput.value) || 0;
+        let highestAchieved = null;
+        metas.forEach(meta => {
+            const percent = meta.target > 0 ? Math.min(100, (currentValue / meta.target) * 100) : 0;
+            const fill = document.getElementById(`meta${meta.id}-fill`);
+            const percentText = document.getElementById(`meta${meta.id}-percent`);
+            if (fill && percentText) {
+                fill.style.width = `${percent}%`;
+                percentText.textContent = `${Math.floor(percent)}%`;
+                fill.classList.toggle('completed', percent >= 100);
+                if (percent >= 100) highestAchieved = meta;
+            }
+        });
+        if (!highestAchieved) {
+            const faltam = metas.length > 0 ? metas[0].target - currentValue : 0;
+            summaryText.innerHTML = `Faltam <strong>${faltam > 0 ? faltam : 0}</strong> para a Faixa 1 (${((metas[0] || {}).reward || 0) * 100}%).`;
+            summaryText.className = 'summary-box';
+        } else {
+            const nextMetaIndex = metas.findIndex(m => m.id === highestAchieved.id) + 1;
+            summaryText.innerHTML = nextMetaIndex < metas.length ? `Atingido: <strong>Faixa ${highestAchieved.id} (${highestAchieved.reward * 100}%)</strong>. Faltam <strong>${metas[nextMetaIndex].target - currentValue}</strong> para a próxima!` : `🏆 Meta máxima de <strong>${highestAchieved.reward * 100}%</strong> atingida!`;
+            summaryText.className = 'summary-box completed';
+        }
+        calculateBonus();
+        checkAchievements();
+    };
+    const calculateBonus = () => {
+        if (baseSalary <= 0) {
+            bonusValueEl.textContent = 'R$ 0,00';
+            bonusFormulaEl.innerHTML = 'Defina o seu <strong style="color: var(--warning-color); cursor: pointer;" onclick="document.getElementById(\'settings-button\').click()">salário base</strong> nas configurações.';
+            return;
+        }
+        const cancelamentos = parseInt(atendimentosInput.value) || 0;
+        let achievedMeta = null;
+        for (let i = metas.length - 1; i >= 0; i--) { if (cancelamentos >= metas[i].target) { achievedMeta = metas[i]; break; } }
+        
+        if (achievedMeta) {
+            const bonus = baseSalary * achievedMeta.reward;
+            bonusValueEl.textContent = `R$ ${bonus.toFixed(2).replace('.', ',')}`;
+            bonusFormulaEl.innerHTML = `Atingido: ${achievedMeta.reward * 100}% de R$${baseSalary.toFixed(2).replace('.',',')}`;
+        } else if (metas.length > 0) {
+            const firstTierBonus = baseSalary * metas[0].reward;
+            bonusValueEl.textContent = `R$ ${firstTierBonus.toFixed(2).replace('.', ',')}`;
+            bonusFormulaEl.innerHTML = `Meta para Faixa 1 (${metas[0].target} cancelamentos)`;
+        } else {
+            bonusValueEl.textContent = 'R$ 0,00';
+            bonusFormulaEl.innerHTML = 'Nenhuma meta definida.';
+        }
+    };
+    const updateProjection = () => {
+        const currentMonth = new Date().getMonth();
+        const monthHistory = history.map(e => ({...e, dateObj: parseDate(e.date)}))
+                                  .filter(e => e.dateObj.getMonth() === currentMonth)
+                                  .sort((a, b) => a.dateObj - b.dateObj);
+        
+        const daysWithEntries = new Set(monthHistory.map(h => h.date)).size;
+
+        if (monthHistory.length < 2) {
+            projectionValueEl.textContent = "N/A";
+            projectionFormulaEl.textContent = "Guarde por pelo menos 2 dias neste mês.";
+            tierProjectionContainer.innerHTML = '';
+            return;
+        }
+        const firstEntry = monthHistory[0];
+        const lastEntry = monthHistory[monthHistory.length - 1];
+        const cancellationsInPeriod = lastEntry.atendimentos - firstEntry.atendimentos;
+
+        if (daysWithEntries <= 1 || cancellationsInPeriod < 0) {
+            projectionFormulaEl.textContent = "Dados insuficientes.";
+            projectionValueEl.textContent = "N/A";
+        } else {
+            const dailyAvg = cancellationsInPeriod / (daysWithEntries - 1);
+            const projectedTotal = firstEntry.atendimentos + (dailyAvg * (TOTAL_WORKING_DAYS - 1));
+            projectionValueEl.textContent = Math.round(projectedTotal);
+            projectionFormulaEl.textContent = `Média de ${dailyAvg.toFixed(1)}/dia. Projeção para ${TOTAL_WORKING_DAYS} dias úteis.`;
+        }
+        
+        const currentValue = parseInt(atendimentosInput.value) || 0;
+        const remainingWorkingDays = TOTAL_WORKING_DAYS - daysWithEntries;
+
+        if (remainingWorkingDays <= 0) {
+            tierProjectionContainer.innerHTML = '<p style="font-size: 12px; color: var(--text-secondary-color);">Mês de trabalho concluído.</p>';
+        } else {
+            let tierHtml = `<p style="font-weight: bold; margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 5px;">Média diária necessária:</p><ul style="list-style: none; padding: 0; margin: 0; text-align: left; font-size: 13px;">`;
+            metas.forEach(meta => {
+                const remainingCancellations = meta.target - currentValue;
+                if (remainingCancellations <= 0) {
+                    tierHtml += `<li style="color: var(--success-color); margin-bottom: 4px;">✅ <strong>Faixa ${meta.id} (${meta.target}):</strong> Atingida!</li>`;
+                } else {
+                    const requiredAvg = remainingCancellations / remainingWorkingDays;
+                    tierHtml += `<li style="margin-bottom: 4px;">🎯 <strong>Faixa ${meta.id} (${meta.target}):</strong> Faltam ${remainingCancellations}. Média de <strong>${requiredAvg.toFixed(1)}/dia</strong>.</li>`;
+                }
+            });
+            tierHtml += '</ul>';
+            tierProjectionContainer.innerHTML = tierHtml;
+        }
+    };
+    const renderHistory = () => {
+        historyListEl.innerHTML = '';
+        if (history.length === 0) { historyListEl.innerHTML = '<li>Nenhum registo guardado.</li>'; return; }
+        [...history].sort((a, b) => parseDate(b.date) - parseDate(a.date)).forEach(entry => {
+            const li = document.createElement('li');
+            const dailyCancellations = entry.dailyCancellations !== undefined ? entry.dailyCancellations : 'N/A';
+            const protocols = entry.protocols !== undefined ? entry.protocols : 'N/A';
+            li.innerHTML = `<strong>${entry.date}:</strong> ${dailyCancellations} canc. | ${protocols} protoc.`;
+            historyListEl.appendChild(li);
+        });
+    };
+    const renderTrendChart = () => {
+        if (trendChart) trendChart.destroy();
+        if(!document.getElementById('tab-cancelamentos').classList.contains('active')) return;
+        const labels = history.map(e => e.date);
+        const data = history.map(e => e.atendimentos);
+        const textColor = getComputedStyle(document.body).getPropertyValue('--text-secondary-color');
+        try {
+            trendChart = new Chart(trendChartCanvas, {
+                type: 'line', data: { labels, datasets: [{ label: 'Cancelamentos (Total)', data, fill: true, backgroundColor: 'rgba(0, 191, 165, 0.2)', borderColor: 'rgba(0, 191, 165, 1)', tension: 0.4, pointBackgroundColor: '#fff', pointBorderColor: 'rgba(0, 191, 165, 1)' }] },
+                options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: textColor } }, x: { ticks: { color: textColor } } }, plugins: { legend: { display: false } } }
+            });
+        } catch (e) { console.error("Falha ao renderizar o gráfico de tendência:", e); }
+    };
+    const renderCategoryPieChart = () => {
+        if (categoryPieChart) categoryPieChart.destroy();
+        if(!document.getElementById('tab-cancelamentos').classList.contains('active')) return;
+        
+        const labels = Object.keys(categoryCounts).filter(cat => categoryCounts[cat] > 0);
+        const data = Object.values(categoryCounts).filter(count => count > 0);
+        
+        if (labels.length === 0) return;
+
+        const textColor = getComputedStyle(document.body).getPropertyValue('--text-color');
+
+        try {
+            categoryPieChart = new Chart(categoryPieChartCanvas, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cancelamentos por Categoria',
+                        data: data,
+                        backgroundColor: ['#e73444', '#ffa726', '#29b6f6', '#66bb6a', '#a78bfa', '#facc15'],
+                        borderColor: getComputedStyle(document.body).getPropertyValue('--card-bg'),
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: textColor,
+                                boxWidth: 12,
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        } catch (e) {
+            console.error("Falha ao renderizar o gráfico de pizza:", e);
+        }
+    };
+    
+    function updateAll() {
+        renderHistory();
+        renderAtendimentoMetas();
+        updateProtocolProgress();
+        updateAtendimentoProgress();
+        renderCategorySummary();
+        renderAchievements();
+        checkAchievements();
+        updateProjection();
+        updateDailyMission();
+        renderTrendChart();
+        renderCategoryPieChart();
+        renderCases(document.querySelector('.filter-btn.active')?.dataset.filter || 'all', caseSearchInput.value);
+    }
+    function saveData() {
+        const date = getTodayDateString();
+        const newEntry = { 
+            date, 
+            atendimentos: parseInt(atendimentosInput.value) || 0,
+            dailyCancellations: parseInt(dailyCancellationsInput.value) || 0,
+            protocols: parseInt(protocolosAnalisadosInput.value) || 0
+        };
+        const todayIndex = history.findIndex(entry => entry.date === date);
+        if (todayIndex > -1) { 
+            history[todayIndex] = newEntry;
+        } else { 
+            history.push(newEntry); 
+        }
+        history.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+        
+        localStorage.setItem('performanceHistory', JSON.stringify(history));
+        localStorage.setItem('atendimentosCount', atendimentosInput.value);
+        localStorage.setItem('protocolosAnalisadosCount', protocolosAnalisadosInput.value);
+        localStorage.setItem('categoryCounts', JSON.stringify(categoryCounts));
+        localStorage.setItem('dailyCancellationsCount', dailyCancellationsInput.value);
+        localStorage.setItem('dailyCopyCount', dailyCopyCount);
+        saveLogbook();
+        unlockAchievement('achieve-first-save', 'Primeiro progresso guardado!');
+        updateAll();
+        showToast('Progresso guardado com sucesso!', 'success');
+    }
+    function loadData() {
+        const todayStr = getTodayDateString();
+        const lastUsedDate = localStorage.getItem('lastUsedDate');
+        
+        let dailyCount = 0;
+        let dailyProtocols = 0;
+        dailyCopyCount = 0;
+
+        if (todayStr === lastUsedDate) {
+            dailyCount = parseInt(localStorage.getItem('dailyCancellationsCount')) || 0;
+            dailyProtocols = parseInt(localStorage.getItem('protocolosAnalisadosCount')) || 0;
+            dailyCopyCount = parseInt(localStorage.getItem('dailyCopyCount')) || 0;
+        }
+        
+        dailyCancellationsInput.value = dailyCount;
+        protocolosAnalisadosInput.value = dailyProtocols;
+        previousDailyCancellations = dailyCount;
+        
+        localStorage.setItem('lastUsedDate', todayStr);
+
+        atendimentosInput.value = localStorage.getItem('atendimentosCount') || '';
+        baseSalaryInput.value = baseSalary > 0 ? baseSalary : '';
+        reminderEnabledInput.checked = reminderSettings.enabled;
+        reminderTimeInput.value = reminderSettings.time;
+
+        logbookTextarea.value = dailyLogbook[todayStr] || '';
+        
+        updateAll();
+    }
+    function resetData() {
+        vibrate();
+        if (confirm('Tem a certeza que deseja repor TODOS os dados? Esta ação é irreversível.')) {
+            localStorage.clear();
+            showToast('Dados repostos!', 'danger');
+            setTimeout(() => window.location.reload(), 1000);
+        }
+    }
+    function exportData() {
+        unlockAchievement('achieve-export', 'Primeiro backup realizado!');
+        vibrate();
+        const dataToExport = {
+            savedProgress: { 
+                atendimentos: localStorage.getItem('atendimentosCount'),
+                protocolosAnalisados: localStorage.getItem('protocolosAnalisadosCount')
+            },
+            casesList: allCases,
+            baseSalary: baseSalary,
+            customMetas: metas,
+            history: history,
+            customTexts: JSON.parse(localStorage.getItem('appCustomTexts')),
+            categoryCounts: categoryCounts,
+            unlockedAchievements: unlockedAchievements,
+            reminderSettings: reminderSettings,
+            usedQuickResponses: Array.from(usedQuickResponses),
+            dailyLogbook: dailyLogbook
+        };
+        const dateStr = new Date().toISOString().split('T')[0];
+        
+        const blobJson = new Blob([JSON.stringify(dataToExport, null, 2)], {type: 'application/json'});
+        const urlJson = URL.createObjectURL(blobJson);
+        const aJson = document.createElement('a');
+        aJson.href = urlJson;
+        aJson.download = `backup_completo_metas_${dateStr}.json`;
+        aJson.click();
+        URL.revokeObjectURL(urlJson);
+
+        let txtContent = `Relatório de Metas - ${new Date().toLocaleString('pt-BR')}\n\n`;
+        txtContent += `--- DADOS GERAIS ---\n`;
+        txtContent += `Total de Cancelamentos (Mês): ${atendimentosInput.value || 0}\n`;
+        txtContent += `Cancelamentos do Dia: ${dailyCancellationsInput.value || 0}\n`;
+        txtContent += `Protocolos Analisados (Dia): ${protocolosAnalisadosInput.value || 0}\n\n`;
+        txtContent += `--- DIÁRIO DE BORDO ---\n`;
+        txtContent += `${logbookTextarea.value || 'Nenhuma nota hoje.'}\n\n`;
+        txtContent += `--- HISTÓRICO DE CASOS (${allCases.length}) ---\n`;
+        if(allCases.length > 0) {
+            allCases.forEach((c, i) => {
+                txtContent += `${i+1}. [${c.date}] Protocolo: ${c.protocol || 'N/A'} | Telefone: ${c.phone || 'N/A'} | Status: ${c.status}\n`;
+                txtContent += `   Descrição: ${c.description || 'Nenhuma'}\n`;
+            });
+        } else {
+            txtContent += "Nenhum caso registado.\n";
+        }
+        txtContent += `\n--- RESUMO POR CATEGORIA ---\n`;
+        if(Object.keys(categoryCounts).length > 0) {
+            for(const [cat, count] of Object.entries(categoryCounts)) {
+                txtContent += `- ${cat}: ${count}\n`;
+            }
+        } else {
+            txtContent += "Nenhuma categoria registada.\n";
+        }
+
+        const blobTxt = new Blob([txtContent], {type: 'text/plain;charset=utf-8'});
+        const urlTxt = URL.createObjectURL(blobTxt);
+        const aTxt = document.createElement('a');
+        aTxt.href = urlTxt;
+        aTxt.download = `relatorio_metas_${dateStr}.txt`;
+        aTxt.click();
+        URL.revokeObjectURL(urlTxt);
+
+        showToast('Backup .json e .txt exportados!', 'info');
+    }
+    function importData() {
+        vibrate();
+        const input = document.createElement('input'); input.type = 'file'; input.accept = '.json';
+        input.onchange = e => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = readerEvent => {
+                try {
+                    const importedData = JSON.parse(readerEvent.target.result);
+                    if (confirm('Isto irá sobrescrever os seus dados atuais. Deseja continuar?')) {
+                        localStorage.setItem('atendimentosCount', importedData.savedProgress?.atendimentos || '');
+                        localStorage.setItem('protocolosAnalisadosCount', importedData.savedProgress?.protocolosAnalisados || '');
+                        if(importedData.casesList) localStorage.setItem('casesList', JSON.stringify(importedData.casesList));
+                        if (importedData.baseSalary) localStorage.setItem('baseSalary', importedData.baseSalary);
+                        if (importedData.customMetas) localStorage.setItem('customMetas', JSON.stringify(importedData.customMetas));
+                        if (importedData.history) localStorage.setItem('performanceHistory', JSON.stringify(importedData.history));
+                        if (importedData.customTexts) localStorage.setItem('appCustomTexts', JSON.stringify(importedData.customTexts));
+                        if (importedData.categoryCounts) localStorage.setItem('categoryCounts', JSON.stringify(importedData.categoryCounts));
+                        if (importedData.unlockedAchievements) localStorage.setItem('unlockedAchievements', JSON.stringify(importedData.unlockedAchievements));
+                        if (importedData.reminderSettings) localStorage.setItem('reminderSettings', JSON.stringify(importedData.reminderSettings));
+                        if (importedData.usedQuickResponses) localStorage.setItem('usedQuickResponses', JSON.stringify(Array.from(usedQuickResponses)));
+                        if (importedData.dailyLogbook) localStorage.setItem('dailyLogbook', JSON.stringify(importedData.dailyLogbook));
+                        showToast('Dados importados com sucesso!', 'success');
+                        setTimeout(() => window.location.reload(), 1000);
+                    }
+                } catch (err) { showToast('Erro ao ler o ficheiro. Verifique o formato.', 'danger'); console.error(err); }
+            }
+            reader.readAsText(file, 'UTF-8');
+        }
+        input.click();
+    }
+    
+    function openSettingsModal() {
+        try {
+            baseSalaryInput.value = baseSalary > 0 ? baseSalary : '';
+            settingsMetasContainer.innerHTML = '';
+            metas.forEach(meta => {
+                const group = document.createElement('div');
+                group.className = 'form-group';
+                group.innerHTML = `<label>Faixa ${meta.id}</label><div class="indicators-grid"><input type="number" placeholder="Qtd." value="${meta.target}" data-id="${meta.id}" data-type="target"><input type="number" placeholder="Comissão %" value="${(meta.reward || 0) * 100}" data-id="${meta.id}" data-type="reward"></div>`;
+                settingsMetasContainer.appendChild(group);
+            });
+            settingsModal.style.display = 'block';
+        } catch (error) {
+            console.error("Erro ao abrir as configurações:", error);
+            showToast("Ocorreu um erro ao abrir as configurações.", "danger");
+        }
+    }
+
+    function applyTheme(theme) {
+        document.body.classList.remove(...themes.map(t => `theme-${t}`));
+        if (theme !== 'dark') {
+            document.body.classList.add(`theme-${theme}`);
+        }
+        renderTrendChart();
+        renderCategoryPieChart();
+    }
+
+    // --- EVENT LISTENERS ---
+    atendimentosInput.addEventListener('input', () => { 
+        localStorage.setItem('atendimentosCount', atendimentosInput.value); 
+        updateAtendimentoProgress();
+        updateProjection(); 
+        updateDailyMission();
+    });
+    protocolosAnalisadosInput.addEventListener('input', () => { 
+        localStorage.setItem('protocolosAnalisadosCount', protocolosAnalisadosInput.value);
+        checkAchievements();
+        updateProtocolProgress();
+        updateDailyMission();
+    });
+    dailyCancellationsInput.addEventListener('input', () => {
+        const newDailyValue = parseInt(dailyCancellationsInput.value) || 0;
+        const currentTotal = parseInt(atendimentosInput.value) || 0;
+        const difference = newDailyValue - previousDailyCancellations;
+
+        atendimentosInput.value = currentTotal + difference;
+        previousDailyCancellations = newDailyValue;
+        localStorage.setItem('dailyCancellationsCount', newDailyValue);
+        atendimentosInput.dispatchEvent(new Event('input'));
+    });
+    incrementButton.addEventListener('click', () => {
+        vibrate();
+        let currentDaily = (parseInt(dailyCancellationsInput.value) || 0) + 1;
+        dailyCancellationsInput.value = currentDaily;
+        dailyCancellationsInput.dispatchEvent(new Event('input')); 
+        const category = categorySelect.value;
+        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+        renderCategorySummary();
+        renderCategoryPieChart();
+    });
+    logbookTextarea.addEventListener('input', saveLogbook);
+
+    incrementProtocolosButton.addEventListener('click', () => {
+        vibrate();
+        const newValue = (parseInt(protocolosAnalisadosInput.value) || 0) + 1;
+        protocolosAnalisadosInput.value = newValue;
+        protocolosAnalisadosInput.dispatchEvent(new Event('input'));
+    });
+    
+    casesListContainer.addEventListener('click', (e) => {
+        const target = e.target;
+        const caseEntry = target.closest('.case-entry');
+        if (!caseEntry) return;
+
+        const expandButton = target.closest('.expand-btn');
+        if (expandButton) {
+            const details = caseEntry.querySelector('.case-details-content');
+            details.classList.toggle('visible');
+            expandButton.classList.toggle('expanded');
+            return; 
+        }
+
+        const caseId = caseEntry.dataset.id;
+        const caseItem = allCases.find(c => c.id === caseId);
+
+        if (!caseItem) return;
+
+        if (target.closest('.copy-protocol-btn')) copyToClipboard(caseEntry.querySelector('.protocol-input').value, 'Protocolo copiado!');
+        if (target.closest('.copy-phone-btn')) copyToClipboard(caseEntry.querySelector('.phone-input').value, 'Telefone copiado!');
+        if (target.closest('.copy-case-all-btn')) copyToClipboard(`Status: ${caseItem.status}\nProtocolo: ${caseItem.protocol || 'N/A'}\nTelefone: ${caseItem.phone || 'N/A'}\nDescrição: ${caseItem.description || 'N/A'}`, 'Dados do caso copiados!');
+        if (target.closest('.remove-case-btn')) { 
+            if (confirm('Tem a certeza de que quer excluir este caso?')) {
+                allCases = allCases.filter(c => c.id !== caseId);
+                saveCases();
+                renderCases(document.querySelector('.filter-btn.active').dataset.filter, caseSearchInput.value);
+                vibrate();
+            }
+        }
+    });
+
+    casesListContainer.addEventListener('input', (e) => {
+        const target = e.target;
+        const caseEntry = target.closest('.case-entry');
+        if (!caseEntry) return;
+        const caseId = caseEntry.dataset.id;
+        const caseIndex = allCases.findIndex(c => c.id === caseId);
+
+        if (caseIndex === -1) return;
+
+        if (target.classList.contains('protocol-input')) allCases[caseIndex].protocol = target.value;
+        if (target.classList.contains('phone-input')) allCases[caseIndex].phone = target.value;
+        if (target.classList.contains('description-input')) allCases[caseIndex].description = target.value;
+        if (target.classList.contains('status-select')) {
+             allCases[caseIndex].status = target.value;
+             usedStatuses.add(target.value);
+             localStorage.setItem('usedStatuses', JSON.stringify(Array.from(usedStatuses)));
+             renderCases(document.querySelector('.filter-btn.active').dataset.filter, caseSearchInput.value);
+        }
+        saveCases();
+    });
+    
+    addCaseButton.addEventListener('click', () => {
+        const newCase = { 
+            id: `case_${new Date().getTime()}`,
+            protocol: '', 
+            phone: '', 
+            description: '', 
+            status: 'Pendente',
+            date: getTodayDateString()
+        };
+        allCases.unshift(newCase);
+        unlockAchievement('achieve-first-case', 'Primeiro caso adicionado!');
+        saveCases();
+        renderCases();
+        updateDailyMission();
+        vibrate();
+    });
+
+    caseSearchInput.addEventListener('input', () => {
+        const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+        renderCases(activeFilter, caseSearchInput.value);
+    });
+
+    caseFilterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            caseFilterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            renderCases(button.dataset.filter, caseSearchInput.value);
+        });
+    });
+
+    saveButton.addEventListener('click', () => { vibrate(); saveData(); });
+    resetButton.addEventListener('click', resetData);
+    exportButton.addEventListener('click', exportData);
+    importButton.addEventListener('click', importData);
+    editButton.addEventListener('click', toggleEditMode);
+    
+    categorySelect.addEventListener('click', (e) => {
+        if (isEditMode) {
+            e.preventDefault();
+            const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+            if (!selectedOption) return;
+            const newText = prompt(`Editar categoria "${selectedOption.textContent}":`, selectedOption.textContent);
+            if (newText && newText.trim() && newText.trim() !== selectedOption.textContent) {
+                const trimmedText = newText.trim();
+                const originalValue = selectedOption.value;
+                selectedOption.textContent = trimmedText;
+                selectedOption.value = trimmedText;
+                if (categoryCounts[originalValue]) {
+                    categoryCounts[trimmedText] = categoryCounts[originalValue];
+                    delete categoryCounts[originalValue];
+                }
+                showToast('Categoria atualizada. Clique em "Guardar Textos" para persistir.', 'info');
+                renderCategorySummary();
+                renderCategoryPieChart();
+            }
+        }
+    });
+
+    respostasContainer.addEventListener('click', e => {
+        const target = e.target.closest('.resposta-copiavel');
+        if (!target) return;
+
+        if (isEditMode) {
+            e.preventDefault();
+            const currentSummary = target.innerText;
+            const currentFullText = target.dataset.fullText;
+            
+            const newSummary = prompt("Edite o resumo visível (máx. 2 linhas):", currentSummary);
+            if (newSummary === null) return; 
+
+            const newFullText = prompt("Edite o texto completo a ser copiado:", currentFullText);
+            if (newFullText === null) return; 
+
+            target.innerText = newSummary;
+            target.dataset.fullText = newFullText;
+            showToast('Resposta rápida atualizada. Não se esqueça de guardar!', 'info');
+
+        } else {
+            const fullText = target.dataset.fullText || target.innerText;
+            copyToClipboard(fullText, 'Resposta copiada!');
+            dailyCopyCount++;
+            localStorage.setItem('dailyCopyCount', dailyCopyCount);
+            updateDailyMission();
+            unlockAchievement('achieve-copy-response', 'Resposta rápida copiada!');
+            usedQuickResponses.add(target.id);
+            localStorage.setItem('usedQuickResponses', JSON.stringify(Array.from(usedQuickResponses)));
+            checkAchievements();
+        }
+    });
+    
+    settingsButton.addEventListener('click', openSettingsModal);
+    closeSettingsModal.addEventListener('click', () => settingsModal.style.display = 'none');
+    
+    senhasButton.addEventListener('click', () => senhasModal.style.display = 'block');
+    closeSenhasModal.addEventListener('click', () => senhasModal.style.display = 'none');
+    senhasContainer.addEventListener('click', e => {
+        if (e.target.classList.contains('copyable-credential')) {
+            copyToClipboard(e.target.innerText, 'Credencial copiada!');
+        }
+    });
+    
+    window.addEventListener('click', e => { 
+        if (e.target == settingsModal) settingsModal.style.display = 'none'; 
+        if (e.target == senhasModal) senhasModal.style.display = 'none'; 
+    });
+    
+    settingsForm.addEventListener('submit', e => {
+        e.preventDefault();
+        baseSalary = parseFloat(baseSalaryInput.value) || 0;
+        localStorage.setItem('baseSalary', baseSalary);
+        const newMetas = [];
+        settingsMetasContainer.querySelectorAll('.form-group').forEach(group => {
+            const id = parseInt(group.querySelector('label').textContent.replace('Faixa ', ''));
+            const target = parseInt(group.querySelector('input[data-type="target"]').value);
+            const reward = parseFloat(group.querySelector('input[data-type="reward"]').value) / 100;
+            if (!isNaN(id) && !isNaN(target) && !isNaN(reward)) newMetas.push({ id, target, reward });
+        });
+        metas = newMetas;
+        localStorage.setItem('customMetas', JSON.stringify(metas));
+        reminderSettings.enabled = reminderEnabledInput.checked;
+        reminderSettings.time = reminderTimeInput.value;
+        localStorage.setItem('reminderSettings', JSON.stringify(reminderSettings));
+        showToast('Configurações guardadas!', 'success');
+        settingsModal.style.display = 'none';
+        scheduleReminder();
+        loadData();
+    });
+    
+    window.addEventListener('beforeinstallprompt', e => { 
+        e.preventDefault(); 
+        deferredInstallPrompt = e; 
+        installAppButton.style.display = 'block';
+    });
+    installAppButton.addEventListener('click', async () => { 
+        if (deferredInstallPrompt) { 
+            deferredInstallPrompt.prompt(); 
+            const { outcome } = await deferredInstallPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installAppButton.style.display = 'none';
+            }
+            deferredInstallPrompt = null; 
+        } else { 
+            showToast('App já instalado. Para reinstalar, limpe os dados do site no navegador.', 'info');
+        }
+    });
+
+    clearCacheButton.addEventListener('click', () => {
+        if ('caches' in window && 'serviceWorker' in navigator) {
+            caches.keys().then(function(cacheNames) {
+                return Promise.all(
+                    cacheNames.map(function(cacheName) {
+                        return caches.delete(cacheName);
+                    })
+                );
+            }).then(() => {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for(let registration of registrations) {
+                        registration.unregister();
+                    }
+                    showToast('Cache limpo! A página será recarregada.', 'success');
+                    setTimeout(() => window.location.reload(true), 2000);
+                });
+            });
+        } else {
+            showToast('Recurso não suportado neste navegador.', 'danger');
+        }
+    });
+
+    themeToggleButton.addEventListener('click', () => {
+        const currentTheme = localStorage.getItem('appTheme') || 'dark';
+        const currentIndex = themes.indexOf(currentTheme);
+        const nextIndex = (currentIndex + 1) % themes.length;
+        const newTheme = themes[nextIndex];
+        
+        applyTheme(newTheme);
+        localStorage.setItem('appTheme', newTheme);
+        showToast(`Tema alterado para ${newTheme}!`, 'info');
+        unlockAchievement('achieve-change-theme', 'Novo visual!');
+    });
+    
+    tabsContainer.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'BUTTON') return;
+
+        const tabId = e.target.dataset.tab;
+
+        tabButtons.forEach(button => button.classList.remove('active'));
+        e.target.classList.add('active');
+
+        tabContents.forEach(content => {
+            if (content.id === `tab-${tabId}`) {
+                content.classList.add('active');
+            } else {
+                content.classList.remove('active');
+            }
+        });
+
+        // Re-render charts when their tab is shown
+        renderTrendChart();
+        renderCategoryPieChart();
+    });
+
+
+    // --- INICIALIZAÇÃO ---
+    const savedTheme = localStorage.getItem('appTheme') || 'dark';
+    applyTheme(savedTheme);
+    loadCustomTexts();
+    loadData();
+    scheduleReminder();
+});
+</script>
+</body>
+</html>
+
